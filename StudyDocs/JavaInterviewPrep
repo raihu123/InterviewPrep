@@ -328,13 +328,13 @@ class Dog extends Animal {
 Yes, a superclass reference variable can hold an object of a subclass. This is known as upcasting.
 
 **Example:**
+
 ```java
 Animal myDog = new Dog();
 myDog.makeSound(); // Outputs: Dog barks
 ```
+**If the Child Class has an extra method, And we are using its Parents Reference Type, then that method will not be accessable until the Reference Type is the Child Type.**
 
-**Another example if subclass more methods then parent class this will give compiler error **
-### This is important to remember
 ```java
 
 class HelloWorld {
@@ -342,7 +342,7 @@ class HelloWorld {
         A b = new B();
         b.methodA(); // methodAClassB
         // b.methodB();// THis will give compiler error
-        B b2 = new B();
+        B b2 = (B) b;
         b2.methodA(); // methodAClassB
         b2.methodB(); // method.B
     }
