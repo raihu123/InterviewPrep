@@ -363,6 +363,56 @@ class HelloWorld {
 }
 ```
 
+#### What is covariant return types ? 
+
+Covariant return types in Java allow an overridden method in a subclass to return a more specific type than the method in the superclass. This enhances type safety by allowing more precise return types without breaking the method's contract.
+
+**Limitations:**
+- Inheritance Hierarchy: The return type of the overriding method must be a subclass of the return type declared in the parent interface or abstract class.
+- Type Consistency: The method signature must remain consistent in other aspects (parameters, name, etc.), only the return type is allowed to vary covariantly.
+- No Contravariant Parameters: While return types can be covariant, method parameters cannot be contravariant (i.e., you cannot change parameter types in the overriding method).
+
+### Example:
+```java
+class Animal {
+    Animal getAnimal() {
+        return new Animal();
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    Dog getAnimal() {
+        return new Dog();
+    }
+}
+
+interface AnimalProvider {
+    Animal getAnimal();
+}
+
+class DogProvider implements AnimalProvider {
+    @Override
+    Dog getAnimal() {
+        return new Dog();
+    }
+}
+
+abstract class AnimalProvider {
+    abstract Animal getAnimal();
+}
+
+class DogProvider extends AnimalProvider {
+    @Override
+    Dog getAnimal() {
+        return new Dog();
+    }
+}
+
+```
+
+In this example, `Dog` overrides `getAnimal` and specifies `Dog` as the return type, which is a subtype of `Animal`.
+
 #### 36. Is multiple inheritance allowed in Java?
 Multiple inheritance is not allowed in Java for classes. However, a class can implement multiple interfaces.
 
@@ -393,6 +443,12 @@ class Dog implements Animal {
 }
 ```
 
+#### What happens when a class implements multiple interface in java but they have the same name but different paramaeter or return type? 
+
+When a class in Java implements multiple interfaces that have methods with the same name but different parameters (method overloading), the class must implement each version of the method. 
+*If the methods have the same name and parameters but different return types, this will cause a compile-time error because Java does not allow method overloading based solely on return type.*
+
+
 #### 40. Can you explain a few tricky things about interfaces?
 - **Multiple Inheritance:** A class can implement multiple interfaces, providing a way to achieve multiple inheritance.
 - **Default Methods:** Introduced in Java 8, interfaces can have default methods with implementation.
@@ -417,6 +473,7 @@ interface Dog extends Animal {
 Yes, a class can implement multiple interfaces.
 
 **Example:**
+
 ```java
 class Dog implements Animal, Pet {
     public void eat() {
@@ -495,9 +552,7 @@ class Vehicle {
 }
 
 class Car extends Vehicle {
-    Car(String name
-
-) {
+    Car(String name) {
         super(name); // Call to superclass constructor
         System.out.println("Car is created");
     }
@@ -527,6 +582,7 @@ class ElectricCar extends Car {
 Car is created
 ElectricCar is created
 ```
+The compiler will introduce a `super()` this will be only done if the Parent has a default or no argument constructor.
 
 #### 52. What is the use of `this()`?
 The `this()` keyword is used to call another constructor in the same class. It is useful for constructor chaining.
