@@ -37,5 +37,22 @@ or clonig
 - `git rebase <branch>` It merges but by rewritting history TODO: Need a compartive example between rebase and merge
 
 ### Git submodule
+- `git submodule update --init --recursive`
+- `git submodule add <url> <repo-name>`
+- `git commit -m "submodule added"`
+- sometimes it does not create the modules properly might need to add `.gitmodules` file
+- `touch .gitmodules`
+ ```text
+[submodule "JavaPractice"]
+path = JavaPractice
+url = https://github.com/raihu123/JavaPractice.git
+```
 
+### Git Ignore file
+- `touch .gitignore`
+```cli
+logs/
+*.notes
+pattern*/
+```
 
