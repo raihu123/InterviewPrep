@@ -56,3 +56,59 @@ logs/
 pattern*/
 ```
 
+ ### Merge vs Rebase in Git: Easy Understanding
+
+**Merge:**
+- **Combines** the history of two branches.
+- Creates a **merge commit**.
+- Keeps the branch history intact.
+
+**Example:**
+```sh
+# Start on feature branch
+git checkout feature
+
+# Merge changes from main branch into feature
+git merge main
+```
+- Result: The feature branch now has a merge commit that combines changes from both branches.
+
+**Rebase:**
+- **Reapplies** your changes on top of another branch.
+- **Rewrites** commit history.
+- Creates a **linear history**.
+
+**Example:**
+```sh
+# Start on feature branch
+git checkout feature
+
+# Rebase feature branch onto main
+git rebase main
+```
+- Result: The feature branch commits are moved to the top of the main branch history, creating a straight line of commits.
+
+### Visual Example:
+**Before Merge/Rebase:**
+```
+main:    A---B---C
+            \
+feature:     D---E
+```
+
+**After Merge:**
+```
+main:    A---B---C
+            \     \
+feature:     D---E---M (M = merge commit)
+```
+
+**After Rebase:**
+```
+main:    A---B---C---D'---E' (D' and E' are rebased commits)
+```
+
+### Summary:
+- **Merge**: Keeps history, creates a merge commit.
+- **Rebase**: Linear history, no merge commit, rewrites commits.
+
