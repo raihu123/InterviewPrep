@@ -1,3 +1,59 @@
+### Pass by Value vs. Pass by Reference
+
+#### Pass by Value
+**Definition:** When a method is called, a copy of the actual value is passed to the method. Changes made to the parameter inside the method do not affect the original value.
+
+**Example:**
+```java
+public class Example {
+    public static void main(String[] args) {
+        int num = 5;
+        modifyValue(num);
+        System.out.println(num); // Output: 5
+    }
+
+    public static void modifyValue(int value) {
+        value = 10; // Changes only the copy, not the original
+    }
+}
+```
+
+**Easy to Remember:** Java always uses pass by value. When passing primitive types, the actual value is copied. Changing the copy does not affect the original value.
+
+#### Pass by Reference
+**Definition:** When a method is called, a reference to the actual variable is passed to the method. Changes made to the parameter inside the method do affect the original variable.
+
+**Note:** Java does not support pass by reference. However, when passing objects, the reference to the object is passed by value, meaning the reference itself is copied, but both the original and the copy refer to the same object. Thus, changes to the object's internal state do affect the original object.
+
+**Example:**
+```java
+public class Example {
+    public static void main(String[] args) {
+        MyObject obj = new MyObject();
+        obj.value = 5;
+        modifyObject(obj);
+        System.out.println(obj.value); // Output: 10
+    }
+
+    public static void modifyObject(MyObject obj) {
+        obj.value = 10; // Changes the original object's state
+    }
+}
+
+class MyObject {
+    int value;
+}
+```
+
+**Easy to Remember:** In Java, object references are passed by value. The reference to the object is copied, but both the original and the copy point to the same object, so changes to the object's state are visible outside the method.
+
+### Summary
+
+- **Pass by Value:** Copies the actual value. Changes inside the method do not affect the original value.
+- **Pass by Reference:** (Not in Java) Would copy the reference itself. In Java, object references are passed by value, so changes to the object's state affect the original object.
+
+
+
 ### Object-Oriented Programming Concepts
 
 #### 1. What is a class?
