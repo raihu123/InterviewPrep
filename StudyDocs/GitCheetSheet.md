@@ -14,6 +14,16 @@ Most things here will be commands Mainly ordered by most commonly used by me.
 - `git merge <name-of-the-branch>` (merge a remote branch into your current branch to bring it up to date)
 - `git pull <alias> <branch>`
 
+#### When reverting/working with a previous commit
+- `git revert <commit-hash>` If you want to undo changes without losing history. (then add changes to staging and then commit)
+or
+- `git reset <commit-hash>` If you want to discard changes and possibly rewrite history.
+  - `git reset --soft <commit-hash>` Moves the branch pointer to a previous commit but keeps changes in the staging area and working directory.
+  - `git reset --mixed <commit-hash>` Moves the branch pointer and resets the index, but keeps changes in the working directory.
+  - `git reset --hard <commit-hash>` To reset the branch to a specific commit and discard all changes made after that commit
+or
+- `git checkout <commit-hash>` If you just want to view or temporarily work with a previous commit.
+
 #### General but commonly used
 - `git status` (Shows what is in stagged or what is not)
 - `git fetch` (fetches all the current brach in git remote)
