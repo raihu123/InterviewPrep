@@ -565,5 +565,3 @@ class Child extends Parent {
 **Answer:** No, static variables are not serialized. Only instance variables are serialized.
 
 **Easy to Remember:** Static variables are not saved in serialization.
-
-Feel free to ask for more details or examples on any specific topic!
