@@ -565,3 +565,7 @@ class Child extends Parent {
 **Answer:** No, static variables are not serialized. Only instance variables are serialized.
 
 **Easy to Remember:** Static variables are not saved in serialization.
+
+#### 52. How to make a vairble not serialize?
+**Answer:** Just add the `transient` keyword.
+**Example:** `private transient String password;`
