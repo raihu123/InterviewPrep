@@ -56,6 +56,25 @@ class MyObject {
 
 ### Object-Oriented Programming Concepts
 
+#### Explain the sequence of Object Creation:
+
+1. **Static Variable Initialization**
+   - Static variables are initialized.
+   - Static blocks are executed.
+
+2. **Static Initializers (Static Blocks)**
+   - Static blocks run once when the class is loaded.
+
+3. **Instance Variable Initialization**
+   - Instance variables are initialized to default values.
+
+4. **Instance Initializers (Instance Blocks)**
+   - Instance initializer blocks run each time an object is created, before the constructor.
+
+5. **Constructor Execution**
+   - The constructor is executed, allowing for further initialization of the object.
+   
+
 #### 1. What is a class?
 A class is a blueprint or template for creating objects. It defines a type of object according to the methods and properties (variables) that the objects created from the class will have.
 
