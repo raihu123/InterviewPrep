@@ -78,7 +78,7 @@ try {
 
 #### 8. What is the difference between error and exception?
 **Answer:**
-- **Error:** Represents serious issues that a reasonable application should not try to catch (e.g., `OutOfMemoryError`, `StackOverflowError`).
+- **Error:** Represents serious issues that a reasonable application should not try to catch but you logically you can catch it (e.g., `OutOfMemoryError`, `StackOverflowError`).
 - **Exception:** Represents conditions that a reasonable application might want to catch and handle (e.g., `IOException`, `SQLException`).
 
 **Easy to Remember:** Errors are serious and usually fatal; exceptions are manageable issues.
@@ -86,7 +86,7 @@ try {
 #### 9. What is the difference between checked exceptions and unchecked exceptions?
 **Answer:**
 - **Checked Exceptions:** Must be declared in the method signature using `throws` or handled with a `try-catch` block. They are checked at compile-time (e.g., `IOException`, `SQLException`).
-- **Unchecked Exceptions:** Do not need to be declared or caught. They are checked at runtime (e.g., `NullPointerException`, `ArithmeticException`).
+- **Unchecked Exceptions:** Do not need to be declared or caught. They are checked at runtime (e.g., `NullPointerException`, `ArithmeticException`). Typically Unchecked Exception are the child of RuntimeException
 
 **Easy to Remember:** Checked exceptions are checked at compile-time; unchecked at runtime.
 
@@ -195,3 +195,85 @@ try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
 6. **Document Exceptions:** Use JavaDoc to document the exceptions a method might throw.
 
 **Easy to Remember:** Be specific, log errors, don't suppress, clean up, explain, and document.
+
+#### 18. What Will Happen to the Exception Object After Exception Handling?
+
+**Answer:** After exception handling, the `Exception` object is eligible for garbage collection if there are no more references to it. Once the `catch` block completes, the `Exception` object is no longer in use, provided it is not stored or referenced elsewhere in the code. The Java garbage collector will eventually reclaim the memory used by the `Exception` object.
+
+**Easy to Remember:** After handling an exception, the `Exception` object is usually discarded and may be collected by the garbage collector if not referenced elsewhere.
+
+#### 19. How Does the `finally` Block Differ from the `finalize()` Method?
+
+**Answer:**
+
+- **`finally` Block:**
+  - **Purpose:** Used for code that must always be executed after a `try` block, regardless of whether an exception is thrown or not. Commonly used for resource cleanup like closing files or releasing resources.
+  - **Execution:** Executes after the `try` block and any `catch` blocks. It always runs unless the JVM exits or crashes.
+  - **Syntax:** Part of exception handling.
+  
+  **Example:**
+  ```java
+  try {
+      // code that may throw an exception
+  } finally {
+      // cleanup code, always executed
+  }
+  ```
+
+- **`finalize()` Method:**
+  - **Purpose:** Used for cleanup before an object is garbage collected. It allows an object to perform cleanup before being reclaimed by the garbage collector.
+  - **Execution:** Called by the garbage collector on an object when garbage collection determines that there are no more references to the object.
+  - **Syntax:** A method of the `Object` class, overridden in a class to define custom finalization code.
+  
+  **Example:**
+  ```java
+  @Override
+  protected void finalize() throws Throwable {
+      try {
+          // cleanup code before garbage collection
+      } finally {
+          super.finalize(); // Always call the superclass finalize
+      }
+  }
+  ```
+
+**Easy to Remember:**
+
+- **`finally`**: Ensures code runs after `try`/`catch` for resource cleanup.
+- **`finalize()`**: Runs before an object is garbage collected for last-minute cleanup.
+
+In summary, `finally` is part of exception handling to ensure certain code runs regardless of exceptions, while `finalize()` is a method called by the garbage collector to clean up resources before an object is destroyed.
+
+
+### Exception Handling in Inheritance
+
+#### Case 1: SuperClass declares an exception and SubClass declares exceptions other than the child exception of the SuperClass declared Exception.
+- **Explanation:** This is not allowed. The subclass method cannot declare a broader or completely different exception than the superclass method.
+- **Easy to Remember:** SubClass can't throw a new or broader exception.
+
+#### Case 2: SuperClass declares an exception and SubClass declares a child exception of the SuperClass declared Exception.
+- **Explanation:** This is allowed. The subclass can declare an exception that is a subclass of the exception declared by the superclass.
+- **Easy to Remember:** SubClass can throw a more specific (child) exception.
+
+#### Case 3: SuperClass declares an exception and SubClass declares without exception.
+- **Explanation:** This is allowed. The subclass can choose not to declare any exception even if the superclass does.
+- **Easy to Remember:** SubClass can choose to throw no exception.
+
+#### Case 4: SuperClass doesn’t declare any exception and SubClass declares a checked exception.
+- **Explanation:** This is not allowed. The subclass cannot declare a checked exception if the superclass method does not declare any exception.
+- **Easy to Remember:** SubClass can't add checked exceptions if SuperClass has none.
+
+#### Case 5: SuperClass doesn’t declare any exception and SubClass declares an unchecked exception.
+- **Explanation:** This is allowed. The subclass can declare unchecked (runtime) exceptions even if the superclass does not declare any exceptions.
+- **Easy to Remember:** SubClass can add unchecked exceptions freely.
+
+### Summary
+
+1. **SuperClass declares an exception:** 
+   - SubClass can't throw new or broader exceptions.
+   - SubClass can throw child exceptions.
+   - SubClass can choose to throw no exceptions.
+
+2. **SuperClass doesn’t declare any exception:** 
+   - SubClass can't throw checked exceptions.
+   - SubClass can throw unchecked exceptions.
