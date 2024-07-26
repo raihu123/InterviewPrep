@@ -244,6 +244,48 @@ try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
 
 In summary, `finally` is part of exception handling to ensure certain code runs regardless of exceptions, while `finalize()` is a method called by the garbage collector to clean up resources before an object is destroyed.
 
+#### 20. What is output of this code ? 
+
+```java
+class Test{
+    public static void main(String[] args){
+        try{
+            int a[]= {1, 2, 3, 4};
+            for (int i = 1; i <= 4; i++){
+                System.out.println (\"a[\" + i + \"]=\" + a[i] + \"\\n\");
+            }
+        }
+        
+        catch (Exception e){
+            System.out.println (\"error = \" + e);
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            System.out.println (\"ArrayIndexOutOfBoundsException\");
+        }
+    }
+}
+```
+**Answer:**
+ArrayIndexOutOfBoundsException has been already caught by base class Exception. When a subclass exception is mentioned after base class exception, then error occurs.
+
+**Easy to Remember**
+If there is a catch for a broader or a parent type Excaption is before the narrower or child type Exception then there will be a comipler error.
+
+#### 21. What is the output of the following code?
+```java
+class Main {
+   public static void main(String args[]) {
+      try {
+         throw 10;
+      }
+      catch(int e) {
+         System.out.println(\"Got the  Exception \" + e);
+      }
+  }
+}
+```
+**Answer**
+This will give a compiler error. As only SubClass of Throwable type can only be thrown. 
 
 ### Exception Handling in Inheritance
 
