@@ -45,6 +45,7 @@ or clonig
 #### Not commonly Used by me
 - `git reset <file>` (unstage a file while retaining the changes in working directory)
 - `git rebase <branch>` It merges but by rewritting history TODO: Need a compartive example between rebase and merge
+- `git cherry-pick <commit-sha>` is a powerful command that enables arbitrary Git commits to be picked by reference and appended to the current working HEAD. 
 
 ### Git submodule
 - `git submodule update --init --recursive`
