@@ -41,7 +41,7 @@ t.start();
 
 **Easy to Remember:** Call `start()` to run the thread.
 
-#### 6. Different States of a Thread
+#### 6. Different States of a Thread (Thread States (High-Level))
 **Answer:** 
 1. **New:** Thread is created but not started.
 2. **Runnable:** Thread is ready to run.
@@ -196,3 +196,37 @@ t2.start();
 ```
 
 **Easy to Remember:** Use `synchronized`, `wait()`, and `notify()`.
+
+#### 24. Difference Between Processes and Threads
+**Answer:**
+- **Processes:** Independent execution units with their own memory space. Communication between processes is more complex.
+- **Threads:** Smaller units within a process that share the same memory space. Easier communication and lower overhead.
+
+**Easy to Remember:** Processes are independent with separate memory; threads are part of a process sharing memory.
+
+
+#### 25. Difference Between Synchronized Method and Synchronized Block
+**Answer:**
+- **Synchronized Method:** Locks the entire method, affecting all the code within it.
+- **Synchronized Block:** Locks only the specific block of code, allowing more fine-grained control over synchronization.
+
+**Easy to Remember:** Method locks the entire method; block locks specific code segment.
+
+#### 26. Thread Synchronization Inside a Monitor
+**Answer:** Thread synchronization in Java occurs within a monitor, which is a mechanism that controls access to an object. Each object has an associated monitor that a thread can lock or unlock. When a thread enters a synchronized method or block, it acquires the monitor lock, and other threads trying to enter synchronized code on the same object are blocked until the lock is released.
+
+**Levels of Synchronization:**
+1. **Object Level:** Synchronize instance methods or blocks using the object's monitor.
+2. **Class Level:** Synchronize static methods or blocks using the class's monitor.
+
+**Easy to Remember:** Use object's monitor for instance methods/blocks; use class's monitor for static methods/blocks.
+
+#### 27. Ensuring N Threads Can Access N Resources Without Deadlock
+**Answer:** To avoid deadlocks, follow these principles:
+1. **Resource Ordering:** Assign a consistent order to acquire resources.
+2. **Avoid Nested Locks:** Prevent threads from holding multiple locks simultaneously.
+3. **Use Timeout:** Implement timeouts when attempting to acquire a lock.
+4. **Deadlock Detection:** Use algorithms to detect and recover from deadlocks.
+
+**Easy to Remember:** Order resources, avoid nested locks, use timeouts, and detect deadlocks.
+
