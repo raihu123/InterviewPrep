@@ -29,7 +29,7 @@ Wrapper classes in Java allow primitive data types (int, char, etc.) to be used 
 - **Auto-boxing:** Automatic conversion between primitive types and their corresponding wrapper classes.
 - **Unboxing:** Conversion from wrapper classes to primitive types.
 
-### Casting
+#### Casting
 
 #### 8. What is Casting?
 Converting a variable from one type to another. It can be implicit or explicit.
@@ -194,7 +194,7 @@ public void display(final int number) {
 
 **Easy to Remember:** Final arguments are like fixed rules; they remain the same within their scope.
 
-### Other Modifiers
+#### Other Modifiers
 
 #### 23. What happens when a variable is marked as volatile?
 **Definition:** A `volatile` variable is a special modifier used in multi-threaded programming. It indicates that the value of the variable can change unexpectedly and ensures that every thread reads the value of the variable directly from the main memory, rather than from a thread-local cache. Works on primitive and Objects type variable.
@@ -319,7 +319,7 @@ public class StringSwitch {
 #### 29. What is an enhanced for loop?
 **Answer:** "for-each" 
 
-### Array Operations and Characteristics
+#### Array Operations and Characteristics
 
 #### 30. Default Values in an Array
 **Answer:** The default values in an array depend on the type of the array elements:
@@ -396,7 +396,7 @@ public void printNumbers(int... numbers) {
 
 **Easy to Remember:** Use `type... variableName` for varargs.
 
-### Assertions
+#### Assertions
 
 #### 36. Asserts
 **Answer:** Asserts are used for debugging/testing purposes to ensure that certain conditions are true during development.
@@ -421,7 +421,7 @@ assert x > 0 : "x must be greater than 0";
 
 **Easy to Remember:** Create fewer objects, nullify unneeded references, avoid memory leaks.
 
-### Initialization Blocks
+#### Initialization Blocks
 
 #### 40. Initialization Blocks
 **Answer:** Initialization blocks are blocks of code used to initialize instance variables.
@@ -565,3 +565,48 @@ class Child extends Parent {
 **Answer:** No, static variables are not serialized. Only instance variables are serialized.
 
 **Easy to Remember:** Static variables are not saved in serialization.
+
+#### 52. Purpose of Garbage Collection in Java
+**Answer:** The purpose of garbage collection is to automatically manage memory by identifying and disposing of objects that are no longer needed, thereby freeing up memory resources for new objects.
+
+**Easy to Remember:** Garbage collection frees memory by removing unused objects.
+
+#### 53. System.gc() and Runtime.gc() Methods
+**Answer:** Both `System.gc()` and `Runtime.gc()` suggest to the JVM that it might be a good time to run the garbage collector. However, their execution is not guaranteed.
+
+**Easy to Remember:** `System.gc()` and `Runtime.gc()` request garbage collection but don't guarantee it.
+
+#### 54. When is finalize() Called? Purpose of Finalization
+**Answer:** The `finalize()` method is called by the garbage collector before an object is removed from memory. It allows the object to clean up resources, like closing files or releasing network connections.
+
+**Easy to Remember:** `finalize()` cleans up resources before garbage collection.
+
+#### 55. If an Object Reference is Set to null, Will Garbage Collector Immediately Free Memory?
+**Answer:** No, setting an object reference to null does not immediately free memory. The object becomes eligible for garbage collection, but the actual collection happens at the discretion of the JVM's garbage collector.
+
+**Easy to Remember:** Nullifying a reference makes an object eligible for garbage collection, but memory freeing is not immediate.
+
+#### 56. Structure of Java Heap and Perm Gen Space
+**Answer:** The Java heap is divided into:
+1. **Young Generation:** Where new objects are allocated.
+2. **Old Generation:** Where long-surviving objects are stored.
+3. **Permanent Generation (Perm Gen):** Stores metadata like class definitions. (Note: Perm Gen has been replaced by Metaspace in Java 8).
+
+**Easy to Remember:** Heap has Young and Old Generations; Perm Gen holds class metadata (now Metaspace).
+
+#### 57. Difference Between Serial and Throughput Garbage Collector
+**Answer:**
+- **Serial Garbage Collector:** Uses a single thread to perform all garbage collection work, suitable for small applications.
+- **Throughput Garbage Collector:** Uses multiple threads to maximize application throughput, suitable for large applications.
+
+**Easy to Remember:** Serial is single-threaded; Throughput is multi-threaded for better performance.
+
+#### 58. When Does an Object Become Eligible for Garbage Collection?
+**Answer:** An object becomes eligible for garbage collection when there are no more live references pointing to it.
+
+**Easy to Remember:** No live references mean the object is eligible for garbage collection.
+
+#### 59. Does Garbage Collection Occur in Permanent Generation Space in JVM?
+**Answer:** Yes, garbage collection can occur in the Permanent Generation space to collect class metadata and other static data that are no longer needed. In Java 8 and later, this is handled in Metaspace.
+
+**Easy to Remember:** Yes, Perm Gen/Metaspace can also be garbage collected.
