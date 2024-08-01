@@ -45,7 +45,7 @@ t.start();
 **Answer:** 
 1. **New:** Thread is created but not started.
 2. **Runnable:** Thread is ready to run.
-3. **Blocked:** Thread is blocked and waiting for a monitor lock.
+3. **Blocked:** Thread is blocked and waiting for a [monitor lock](#28-what-is-a-monitor-lock).
 4. **Waiting:** Thread is waiting indefinitely for another thread.
 5. **Timed Waiting:** Thread is waiting for a specified period.
 6. **Terminated:** Thread has finished execution.
@@ -229,4 +229,9 @@ t2.start();
 4. **Deadlock Detection:** Use algorithms to detect and recover from deadlocks.
 
 **Easy to Remember:** Order resources, avoid nested locks, use timeouts, and detect deadlocks.
+
+#### 28 What is a monitor lock?
+**Anser:** A monitor lock, often referred to as a mutex (mutual exclusion), is a [synchronization mechanism](#26-thread-synchronization-inside-a-monitor) used in concurrent programming to control access to a shared resource by multiple threads. It ensures that only one thread can access the resource at a time, preventing race conditions and ensuring thread safety.
+
+**Easy to Remember:** Ensures only one thread accesses a resource at a time
 
