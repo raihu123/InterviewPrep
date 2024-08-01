@@ -1,5 +1,6 @@
 ### 1. Model 1 Architecture
 ![model 1](https://static.javatpoint.com/images/st/model1.jpg)
+
 **Answer:** In Model 1 architecture, the client interacts directly with the JSP pages, which handle both the presentation and business logic. This approach is simple but can lead to poor separation of concerns.
 
 **Easy to Remember:** JSP does everything.
