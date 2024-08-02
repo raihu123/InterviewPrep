@@ -410,82 +410,20 @@ A write to an int (32-bit) variable is guaranteed to be atomic, whether it is vo
 ### 38. What Special Guarantees Does the JMM Hold for Final Fields of a Class?
 The JVM guarantees that final fields of a class will be initialized before any thread gets hold of the object. This ensures that a reference to an object is not published before all its fields are fully initialized. When creating an immutable object, all its fields should be declared final to ensure proper initialization and visibility across threads.
 
-### 39. What Is the Meaning of the Synchronized Keyword in the Definition of a Method? of a Static Method? Before a Block?
-- **Synchronized Block**: Any thread entering the block has to acquire the monitor (the object in brackets). If the monitor is already acquired by another thread, the thread will enter the BLOCKED state and wait until the monitor is released.
-    ```java
-    synchronized(object) {
-        // ...
-    }
-    ```
-- **Synchronized Instance Method**: The instance itself acts as a monitor.
-    ```java
-    synchronized void instanceMethod() {
-        // ...
-    }
-    ```
-- **Static Synchronized Method**: The monitor is the `Class` object representing the declaring class.
-    ```java
-    static synchronized void staticMethod() {
-        // ...
-    }
-    ```
 
-### 40. If Two Threads Call a Synchronized Method on Different Object Instances Simultaneously, Could One of These Threads Block? What If the Method Is Static?
+### 39. If Two Threads Call a Synchronized Method on Different Object Instances Simultaneously, Could One of These Threads Block? What If the Method Is Static?
 - **Instance Method**: If the method is an instance method, the instance acts as a monitor for the method. Two threads calling the method on different instances acquire different monitors, so none of them gets blocked.
 - **Static Method**: If the method is static, the monitor is the `Class` object. For both threads, the monitor is the same, so one of them will probably block and wait for the other to exit the synchronized method.
 
-### 41. What Is the Purpose of the Wait, Notify, and NotifyAll Methods of the Object Class?
-A thread that owns the object’s monitor (e.g., a thread that has entered a synchronized section guarded by the object) may call `object.wait()` to temporarily release the monitor and give other threads a chance to acquire it. This may be done to wait for a certain condition.
-
-When another thread that acquired the monitor fulfills the condition, it may call `object.notify()` or `object.notifyAll()` and release the monitor. The `notify` method wakes a single thread in the waiting state, while `notifyAll` wakes all threads waiting for the monitor, and they compete for re-acquiring the lock.
-
-Here’s an example of a `BlockingQueue` implementation using the wait-notify pattern:
-
-```java
-public class BlockingQueue<T> {
-
-    private List<T> queue = new LinkedList<T>();
-    private int limit = 10;
-
-    public synchronized void put(T item) {
-        while (queue.size() == limit) {
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
-        if (queue.isEmpty()) {
-            notifyAll();
-        }
-        queue.add(item);
-    }
-
-    public synchronized T take() throws InterruptedException {
-        while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {}
-        }
-        if (queue.size() == limit) {
-            notifyAll();
-        }
-        return queue.remove(0);
-    }
-    
-}
-```
-
-### 42. Describe the Conditions of Deadlock, Livelock, and Starvation. Describe the Possible Causes of These Conditions.
-- **Deadlock**: A condition where a group of threads
-
- cannot make progress because each thread is waiting to acquire a resource held by another thread in the group. A common case is when two threads need to lock both of two resources to progress, but each thread holds one resource and waits for the other.
+### 40. Describe the Conditions of Deadlock, Livelock, and Starvation. Describe the Possible Causes of These Conditions.
+- **Deadlock**: A condition where a group of threads cannot make progress because each thread is waiting to acquire a resource held by another thread in the group. A common case is when two threads need to lock both of two resources to progress, but each thread holds one resource and waits for the other.
 - **Livelock**: A situation where multiple threads keep responding to each other’s actions or events but cannot make progress. Threads are alive and not blocked, but they keep overwhelming each other with useless work.
 - **Starvation**: A condition where a thread is unable to acquire a resource because other threads occupy it for too long or have higher priority. As a result, the thread cannot make progress and complete its tasks.
 
-### 43. Describe the Purpose and Use-Cases of the Fork/Join Framework.
+### 41. Describe the Purpose and Use-Cases of the Fork/Join Framework.
 The fork/join framework allows parallelizing recursive algorithms. The main problem with parallelizing recursion using something like `ThreadPoolExecutor` is that it may quickly run out of threads, as each recursive step would require its own thread. The `ForkJoinPool` class, an implementation of `ExecutorService`, uses the work-stealing algorithm, where idle threads try to “steal” work from busy threads. This allows spreading calculations between different threads and making progress while using fewer threads than a regular thread pool.
 
-
-### 44. What is completeableFuture?
+### 42. What is CompletableFuture?
 
 A `CompletableFuture` is a class in Java that represents a future result of an asynchronous computation. It allows you to write non-blocking code, where tasks can run concurrently and notify you when they are done, without waiting for them to finish.
 
