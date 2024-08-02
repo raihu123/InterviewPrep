@@ -479,5 +479,47 @@ public class BlockingQueue<T> {
 - **Livelock**: A situation where multiple threads keep responding to each other’s actions or events but cannot make progress. Threads are alive and not blocked, but they keep overwhelming each other with useless work.
 - **Starvation**: A condition where a thread is unable to acquire a resource because other threads occupy it for too long or have higher priority. As a result, the thread cannot make progress and complete its tasks.
 
-### Q17. Describe the Purpose and Use-Cases of the Fork/Join Framework.
+### 43. Describe the Purpose and Use-Cases of the Fork/Join Framework.
 The fork/join framework allows parallelizing recursive algorithms. The main problem with parallelizing recursion using something like `ThreadPoolExecutor` is that it may quickly run out of threads, as each recursive step would require its own thread. The `ForkJoinPool` class, an implementation of `ExecutorService`, uses the work-stealing algorithm, where idle threads try to “steal” work from busy threads. This allows spreading calculations between different threads and making progress while using fewer threads than a regular thread pool.
+
+
+### 44. What is completeableFuture?
+
+A `CompletableFuture` is a class in Java that represents a future result of an asynchronous computation. It allows you to write non-blocking code, where tasks can run concurrently and notify you when they are done, without waiting for them to finish.
+
+Here's a simple explanation:
+
+- **Future**: A placeholder for a result that will be available in the future.
+- **CompletableFuture**: An enhanced version of Future that allows you to explicitly complete it, chain multiple asynchronous tasks, and handle them more flexibly.
+
+### Key Points to Remember:
+
+1. **Asynchronous Computation**: `CompletableFuture` allows you to run tasks asynchronously, so your program can continue doing other things while waiting for the result.
+2. **Chaining**: You can chain multiple `CompletableFuture` tasks together using methods like `thenApply`, `thenAccept`, `thenRun`, etc., to process the result of one task in the next.
+3. **Non-Blocking**: Unlike traditional `Future`, which blocks the thread until the result is available, `CompletableFuture` provides non-blocking methods to get the result, like `whenComplete`, `thenCompose`, etc.
+4. **Completion**: You can manually complete a `CompletableFuture` using the `complete` method if needed.
+
+### Example:
+
+Here's a simple example to illustrate how `CompletableFuture` works:
+
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        CompletableFuture.supplyAsync(() -> "Hello")
+                .thenApply(greeting -> greeting + " World")
+                .thenAccept(result -> System.out.println(result));
+        
+        // Output: Hello World
+    }
+}
+```
+
+In this example:
+- `supplyAsync` runs the task that returns "Hello" asynchronously.
+- `thenApply` processes the result by appending " World".
+- `thenAccept` consumes the final result and prints it out.
+
+Remember, `CompletableFuture` is powerful for managing complex asynchronous workflows in a simple, readable manner.
