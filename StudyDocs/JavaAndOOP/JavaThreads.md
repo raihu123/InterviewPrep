@@ -345,6 +345,8 @@ t2.start();
 - **Race Condition:** Happens when multiple threads modify shared data simultaneously, leading to unpredictable results. Use synchronization to prevent it.
 
 
+## Advanced Threads
+
 ### 31. What Is a Daemon Thread, What Are Its Use Cases? How Can You Create a Daemon Thread?
 A daemon thread is a thread that does not prevent the JVM from exiting. When all non-daemon threads are terminated, the JVM simply abandons all remaining daemon threads. Daemon threads are typically used for supportive or service tasks for other threads, but you should note that they may be abandoned at any time.
 
