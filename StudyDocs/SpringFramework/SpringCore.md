@@ -128,6 +128,48 @@
 
     **Easy to Remember:** Different roles for different layers.
 
+### `@Bean` and `@Configurartion`
+**Answer**
+`@Bean`
+Purpose: Define a bean (a small, self-contained object) that can be used by the Spring framework.
+How it works: When you annotate a method with `@Bean`, Spring will create an instance of the object returned by that method and store it in its container. You can then inject this bean into other objects using `@Autowired`.
+Example:
+```java
+@Bean
+public DataSource dataSource() {
+    return DataSourceBuilder.create()
+            .driverClassName("com.mysql.cj.jdbc.Driver")
+            .url("jdbc:mysql://localhost:3306/mydb")
+            .username("myuser")
+            .password("mypassword")
+            .build();
+}
+```
+Easy to Remember: `@Bean` is like a recipe for Spring to create an object. You define the ingredients (method parameters) and the recipe (method body), and Spring will create the dish (object instance) for you.
+
+`@Configuration`
+
+Purpose: Define a class that contains bean definitions and other configuration settings for the Spring framework.
+How it works: When you annotate a class with `@Configuration`, Spring will treat it as a source of bean definitions and other configuration settings. You can then use @Bean methods within this class to define beans.
+Example:
+```java
+@Configuration
+public class MyConfig {
+ 
+    @Bean
+    public DataSource dataSource() {
+        // ...
+    }
+ 
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
+    }
+}
+```
+Easy to Remember: `@Configuration` is like a cookbook for Spring. You define a class that contains multiple recipes (`@Bean` methods), and Spring will use these recipes to create objects and configure its container.
+
+
 18. ### Default Scope of a Bean
     **Answer:** Singleton.
 
@@ -289,3 +331,6 @@
     **Answer:** A module in Spring for building web applications, providing a model-view-controller architecture.
 
     **Easy to Remember:** MVC architecture for web apps.
+
+
+    

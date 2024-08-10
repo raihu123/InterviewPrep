@@ -321,3 +321,40 @@ public class AggregationExample {
 - **Association:** No ownership. Objects are related but independent.
 - **Composition:** Strong ownership. Contained objects cannot exist without the container.
 - **Aggregation:** Weak ownership. Contained objects can exist independently of the container.
+
+
+### SOLID Principle:
+#### S - Single Responsibility Principle (SRP)
+
+**Purpose:** Ensure a class has only one reason to change.
+**How it works:** A class should have only one responsibility or single purpose. If a class has multiple responsibilities, it's harder to maintain and extend.
+**Example:** Instead of having a User class that handles both user data and password hashing, create separate classes for each responsibility.
+**Easy to Remember:** A class should have only one job, like a specialist in a team.
+
+#### O - Open-Closed Principle (OCP)
+
+**Purpose:** Allow extension of a class without modifying its source code.
+**How it works:** Use abstraction and polymorphism to add new functionality without changing existing code.
+**Example:** Use an interface or abstract class to define a contract, and create concrete implementations that can be added or removed without changing the existing code.
+**Easy to Remember:** A class should be open for extension but closed for modification, like a door that can be opened but not changed.
+
+#### L - Liskov Substitution Principle (LSP)
+
+**Purpose:** Ensure subclasses can be used as their base classes.
+**How it works:** A subclass should be substitutable for its base class without affecting the correctness of the program.
+**Example:** If Rectangle is a subclass of Shape, then Rectangle should be usable wherever Shape is expected.
+**Easy to Remember:** A subclass should be a perfect substitute for its base class, like a compatible replacement part.
+
+#### I - Interface Segregation Principle (ISP)
+
+**Purpose:** Avoid forcing clients to depend on interfaces they don't use.
+**How it works:** Split large interfaces into smaller, more focused ones that clients can choose to implement.
+**Example:** Instead of having a single Printable interface with print() and scan() methods, create separate interfaces for printing and scanning.
+**Easy to Remember:** Don't force clients to implement interfaces they don't need, like a restaurant menu with only dishes you want to order.
+
+#### D - Dependency Inversion Principle (DIP)
+
+**Purpose:** Decouple high-level modules from low-level modules.
+**How it works:** Use abstraction to invert the dependency between high-level and low-level modules.
+**Example:** Instead of depending on MySQLConnector we should have DBConnector so that we which the type of connector.
+**Easy to Remember:** High-level modules should not depend on low-level modules, like a boss who doesn't depend on a specific employee.
