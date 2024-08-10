@@ -130,7 +130,7 @@
 
 ### `@Bean` and `@Configurartion`
 **Answer**
-`@Bean`
+#### `@Bean`
 Purpose: Define a bean (a small, self-contained object) that can be used by the Spring framework.
 How it works: When you annotate a method with `@Bean`, Spring will create an instance of the object returned by that method and store it in its container. You can then inject this bean into other objects using `@Autowired`.
 Example:
@@ -147,7 +147,7 @@ public DataSource dataSource() {
 ```
 Easy to Remember: `@Bean` is like a recipe for Spring to create an object. You define the ingredients (method parameters) and the recipe (method body), and Spring will create the dish (object instance) for you.
 
-`@Configuration`
+#### `@Configuration`
 
 Purpose: Define a class that contains bean definitions and other configuration settings for the Spring framework.
 How it works: When you annotate a class with `@Configuration`, Spring will treat it as a source of bean definitions and other configuration settings. You can then use @Bean methods within this class to define beans.
