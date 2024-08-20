@@ -1,0 +1,258 @@
+### What is REST?
+**REST** (Representational State Transfer) is an architectural style for designing networked applications. It relies on a stateless, client-server communication protocol, typically HTTP.
+
+**Easy to Remember**: REST = **R**esource-centric, **E**asy communication, **S**tateless, **T**ransfer over HTTP.
+
+---
+
+### What Are the Key Concepts in Designing RESTful API?
+1. **Resources**: Represent data or functionality.
+2. **URIs**: Identify resources.
+3. **HTTP Methods**: Define actions (GET, POST, PUT, DELETE).
+4. **Statelessness**: Each request is independent.
+5. **Representation**: Data format (JSON, XML).
+6. **HATEOAS**: Hypermedia As The Engine Of Application State.
+
+**Easy to Remember**: **R**esource, **U**RI, **M**ethods, **S**tateless, **R**epresentation, **H**ATEOAS.
+
+---
+
+### What Are the Best Practices of RESTful Services?
+1. Use **nouns** for URIs (e.g., `/users`).
+2. Stick to **HTTP methods** for actions.
+3. Handle **errors with appropriate HTTP status codes**.
+4. Make services **stateless**.
+5. Use **HATEOAS** for links to related resources.
+6. Provide **pagination** for large datasets.
+
+**Easy to Remember**: **N**ouns for URIs, **M**ethods for actions, **S**tatus codes, **S**tateless, **H**ATEOAS, **P**agination.
+
+---
+
+### Can You Show the Code for an Example Get Resource Method with Spring REST?
+```java
+@GetMapping("/users/{id}")
+public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    User user = userService.findById(id);
+    return ResponseEntity.ok(user);
+}
+```
+
+**Easy to Remember**: Use `@GetMapping` for GET requests.
+
+---
+
+### What Happens When We Return a Bean from a Request Mapping Method?
+The bean is automatically **serialized** into the specified format (e.g., JSON, XML) and sent as the HTTP response body.
+
+**Easy to Remember**: Bean -> **JSON/XML** -> HTTP Response.
+
+---
+
+### What is GetMapping and What Are the Related Methods Available in Spring MVC?
+`@GetMapping` is a shortcut for `@RequestMapping(method = RequestMethod.GET)`. Related methods include:
+- `@PostMapping`
+- `@PutMapping`
+- `@DeleteMapping`
+- `@PatchMapping`
+
+**Easy to Remember**: **Get, Post, Put, Delete** mappings for CRUD operations.
+
+---
+
+### Can You Show the Code for an Example Post Resource Method with Spring REST?
+```java
+@PostMapping("/users")
+public ResponseEntity<User> createUser(@RequestBody User user) {
+    User savedUser = userService.save(user);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+}
+```
+
+**Easy to Remember**: Use `@PostMapping` for creating resources.
+
+---
+
+### What Is the Appropriate HTTP Response Status for Successful Execution of a Resource Creation?
+**201 Created**.
+
+**Easy to Remember**: Resource created = **201**.
+
+---
+
+### Why Do We Use ResponseEntity in a RESTful Service?
+`ResponseEntity` allows you to control the **HTTP status**, **headers**, and **body** of the response, providing more flexibility.
+
+**Easy to Remember**: **Control** everything about the response.
+
+---
+
+### What Is HATEOAS?
+**HATEOAS** stands for **H**ypermedia **A**s **T**he **E**ngine **O**f **A**pplication **S**tate. It provides links to related resources in the response, allowing clients to navigate the API dynamically.
+
+**Easy to Remember**: HATEOAS = **L**inks in responses.
+
+---
+
+### Can You Give an Example Response for HATEOAS?
+```json
+{
+    "id": 1,
+    "name": "John Doe",
+    "links": [
+        {"rel": "self", "href": "/users/1"},
+        {"rel": "orders", "href": "/users/1/orders"}
+    ]
+}
+```
+
+**Easy to Remember**: Provide **self** and **related** links.
+
+---
+
+### How Do We Implement HATEOAS Using Spring?
+Use the `EntityModel` or `CollectionModel` classes from Spring HATEOAS to add links to your resources.
+
+**Easy to Remember**: Use `EntityModel` for **one** resource, `CollectionModel` for **many**.
+
+---
+
+### How Do You Document RESTful Web Services?
+Use **Swagger** (OpenAPI) for automated documentation, or manually create API docs.
+
+**Easy to Remember**: **Swagger** = **Auto** documentation.
+
+---
+
+### Can You Give a Brief Idea About Swagger Documentation?
+Swagger provides a UI and JSON/YAML specification to interact with and document your APIs, generated from annotations.
+
+**Easy to Remember**: **Interactive API docs** with Swagger.
+
+---
+
+### How Do You Automate Generation of Swagger Documentation from RESTful Web Services?
+Annotate your controllers with `@Api`, `@ApiOperation`, etc., and use SpringFox or OpenAPI libraries to generate the docs.
+
+**Easy to Remember**: Annotate, Generate.
+
+---
+
+### How Do You Add Custom Information to Swagger Documentation Generated from RESTful Web Services?
+Use annotations like `@ApiParam`, `@ApiResponse`, and configuration classes to customize.
+
+**Easy to Remember**: Annotate with **custom** details.
+
+---
+
+### What Is Swagger-UI?
+**Swagger-UI** is a web interface that allows you to view and interact with the API documentation generated by Swagger.
+
+**Easy to Remember**: Swagger-UI = **Visual** API interaction.
+
+---
+
+### What Is "Representation" of a Resource?
+A **representation** is the specific format (JSON, XML, etc.) in which a resource is returned from a RESTful service.
+
+**Easy to Remember**: Resource **format** = Representation.
+
+---
+
+### What Is Content Negotiation?
+**Content Negotiation** is the process of selecting the appropriate representation format (JSON, XML) based on client preferences.
+
+**Easy to Remember**: Negotiating the **format**.
+
+---
+
+### Which HTTP Header Is Used for Content Negotiation?
+The `Accept` header.
+
+**Easy to Remember**: Client **Accepts** the format.
+
+---
+
+### How Do We Implement Content Negotiation Using Spring Boot?
+Use the `ContentNegotiationConfigurer` and configure supported media types in your application.
+
+**Easy to Remember**: Configure **content** options.
+
+---
+
+### How Do You Add XML Support to Your RESTful Services Built with Spring Boot?
+Include `Jackson` or `JAXB` dependencies and configure `MessageConverters` to support XML.
+
+**Easy to Remember**: Add **dependencies** and **configure**.
+
+---
+
+### How Do You Implement Exception Handling for RESTFul Web Services?
+Use `@ControllerAdvice` and `@ExceptionHandler` annotations to globally manage exceptions.
+
+**Easy to Remember**: **Advice** for handling exceptions.
+
+---
+
+### What Are the Best Practices Related to Exception Handling with Respect to RESTful Web Services?
+1. Use **meaningful** status codes (e.g., 404 for not found).
+2. Provide **detailed error messages**.
+3. Implement a **global exception handler**.
+
+**Easy to Remember**: **Codes**, **Messages**, **Global Handler**.
+
+---
+
+### What Are the Different Error Statuses That You Would Return in RESTful Web Services?
+- **400 Bad Request**: Client error.
+- **401 Unauthorized**: Authentication needed.
+- **403 Forbidden**: Access denied.
+- **404 Not Found**: Resource not found.
+- **500 Internal Server Error**: Server-side issue.
+
+**Easy to Remember**: **4xx** for client errors, **5xx** for server errors.
+
+---
+
+### How Would You Implement Them Using Spring Boot?
+Use `@ResponseStatus` on custom exceptions or configure them in `@ControllerAdvice`.
+
+**Easy to Remember**: **Status codes** with exceptions.
+
+---
+
+### What HTTP Response Status Do You Return for Validation Errors?
+**400 Bad Request**.
+
+**Easy to Remember**: Validation = **Client** error = **400**.
+
+---
+
+### How Do You Handle Validation Errors with RESTful Web Services?
+Use `@Valid` on request parameters and handle the validation errors with `BindingResult` and `@ExceptionHandler`.
+
+**Easy to Remember**: Validate with `@Valid`, **catch** errors with `BindingResult`.
+
+---
+
+### Why Do We Need Versioning for RESTful Web Services?
+To manage changes over time without breaking existing clients.
+
+**Easy to Remember**: **Change** management without **breakage**.
+
+---
+
+### What Are the Versioning Options That Are Available?
+1. **URI Versioning**: `/v1/resource`
+2. **Query Parameter Versioning**: `/resource?version=1`
+3. **Header Versioning**: `Accept: application/vnd.example.v1+json`
+4. **Content Negotiation**: Use `Accept` header.
+
+**Easy to Remember**: **U**RI, **Q**uery, **H**eader, **C**ontent (UQHC).
+
+---
+
+### How Do You Implement Versioning for RESTful Web Services?
+Choose a strategy (e.g., URI, Header) and configure your controllers accordingly.
+
+**Easy to Remember**: Pick a **versioning** method and implement.
