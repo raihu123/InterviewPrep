@@ -388,10 +388,92 @@ Angular building blocks include:
 - **Directives:** Add behavior to DOM elements.
 - **Pipes:** Transform data for display.
 
+
 **Explain the MVVM architecture.**
 
 MVVM (Model-View-ViewModel) is an architectural pattern where:
-- **Model:** Represents the data and business logic.
-- **View:** Displays the data to the user.
-- **ViewModel:** Acts as an intermediary,
+- **Model:** Represents the data and business logic of the application.
+- **View:** Represents the UI or the presentation layer, which displays the data.
+- **ViewModel:** Acts as an intermediary between the Model and the View. It handles the logic for fetching and manipulating data, as well as updating the View.
+
+In Angular, components often play the role of the ViewModel, binding the View (template) with the Model (service or data).
+
+**Describe Angular authentication and authorization.**
+
+- **Authentication:** Involves verifying a user's identity, usually via a login process where the user provides credentials (e.g., username and password). Angular can manage authentication using services like `AuthService` and libraries like `AngularFire` or `Auth0` for handling authentication flows.
+
+- **Authorization:** Determines what an authenticated user is allowed to do within the application. Angular can implement authorization using route guards (`CanActivate`, `CanLoad`) to restrict access to certain routes based on the user’s role or permissions.
+
+**Explain the different kinds of Angular directives.**
+
+Angular directives are categorized into three types:
+1. **Component Directives:** These directives are created using the `@Component` decorator. They have their own template and can be used to build UI components.
+2. **Structural Directives:** These change the structure of the DOM by adding or removing elements. Examples include `*ngIf`, `*ngFor`, and `*ngSwitch`.
+3. **Attribute Directives:** These change the appearance or behavior of an element. Examples include `ngClass`, `ngStyle`, and custom attribute directives.
+
+**What are the different types of compilers used in Angular?**
+
+Angular uses two types of compilers:
+1. **JIT (Just-In-Time) Compiler:** Compiles Angular code in the browser at runtime. This method is useful during development because it allows for faster rebuilds.
+2. **AOT (Ahead-Of-Time) Compiler:** Compiles Angular code during the build process, before the browser loads it. This method is typically used in production to reduce the size of the application and improve performance.
+
+**What is server-side rendering in Angular?**
+
+Server-side rendering (SSR) in Angular refers to the process of rendering Angular applications on the server instead of the client. This is done using Angular Universal, which pre-renders pages on the server and sends the HTML to the client. This improves the performance and SEO of the application.
+
+**What is Angular Universal?**
+
+Angular Universal is a technology for SSR (Server-Side Rendering) in Angular. It allows Angular applications to be rendered on the server and delivered to the client with fully pre-rendered HTML, which enhances performance and SEO.
+
+**What are HttpInterceptors in Angular?**
+
+`HttpInterceptors` in Angular are a powerful way to modify outgoing HTTP requests or incoming responses. They are used to implement features like adding authentication tokens, logging, handling global errors, etc.
+
+**How does one share data between components in Angular?**
+
+Data can be shared between Angular components in several ways:
+1. **Input/Output Properties:** Pass data from a parent component to a child component using `@Input` and emit events from the child component using `@Output`.
+2. **Services:** Use a service to store and manage shared data, and inject it into the components that need access to it.
+3. **State Management:** Use a state management library like NgRx or Akita to manage application-wide state.
+
+**What is the difference between interpolated content and the content assigned to the innerHTML property of a DOM element?**
+
+- **Interpolated Content (`{{}}`):** Angular sanitizes the content to prevent XSS attacks, ensuring that any inserted values are safe.
+- **`innerHTML` Property:** Directly inserts HTML into the DOM. Angular sanitizes the HTML before it is inserted, but it can still be less safe if not handled properly.
+
+**What is `ng-content` and its purpose?**
+
+`ng-content` is a directive used for content projection in Angular. It allows you to insert external content into a component's template. For example, it enables the creation of reusable components like modals or tabs, where the content can vary depending on where the component is used.
+
+**What is `ngcc`?**
+
+`ngcc` (Angular Compatibility Compiler) is a tool that converts Node.js packages written with the Angular View Engine to the Ivy format. It allows legacy libraries to be used with Angular’s Ivy compiler.
+
+**What is folding?**
+
+In Angular, folding refers to the process of simplifying the Abstract Syntax Tree (AST) during AOT compilation. It involves evaluating expressions and resolving constants at compile time to optimize the output.
+
+**What are macros?**
+
+In Angular, macros refer to a simplified way of performing operations or creating reusable code blocks. They aren’t a built-in Angular feature but are often used in Angular’s build tools or configuration files for repeating tasks or simplifying complex setups.
+
+**What is the state function?**
+
+The `state` function in Angular animations is used to define different states of an element. You can specify styles for each state, and Angular will transition between these states when triggered.
+
+**What is `Style()`?**
+
+`Style()` in Angular animations defines the CSS styles to be applied during the animation. It can be used to set styles at the beginning, during, or at the end of an animation sequence.
+
+**What is `NgZone`?**
+
+`NgZone` is a service in Angular that helps manage change detection by running code outside or inside of Angular’s zone (the area where Angular automatically detects changes). It’s useful for optimizing performance by reducing unnecessary change detection cycles.
+
+**What is `NoopZone`?**
+
+`NoopZone` is a zone in Angular that does nothing (No-Operation). It is used to completely disable Angular's automatic change detection, typically for performance optimization in specific cases.
+
+**How does Angular manage state?**
+
+Angular manages state through services, which can hold and manage the application's state. For more complex state management, libraries like NgRx or Akita can be used. These libraries implement patterns like Redux to provide a more structured and scalable way to manage state across the application.
 
