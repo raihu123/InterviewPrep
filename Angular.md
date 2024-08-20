@@ -1,116 +1,147 @@
-### 1. **How does an Angular application work?**
-An Angular application is a client-side framework for building web applications. It works by using components and modules to structure the app. When a user interacts with the app, Angular manages the data and updates the view (what the user sees) without needing to reload the entire page. The Angular framework handles user inputs, data changes, and dynamic content by binding data to the UI, managing the flow of the application, and communicating with the backend (server) if necessary.
 
-### 2. **What is TypeScript?**
-TypeScript is a programming language that is a superset of JavaScript, meaning it includes everything JavaScript has and adds additional features like static typing, interfaces, and classes. Angular is written in TypeScript because it helps developers catch errors early through type checking and makes the code more maintainable and scalable.
 
-### 3. **Write a pictorial diagram of Angular architecture.**
-Angular's architecture is based on the following core building blocks:
+Here are the missing answers:
 
-- **Modules**: Containers that organize an application into cohesive blocks of functionality.
-- **Components**: The main building blocks of UI in Angular, where each component controls a part of the screen.
-- **Templates**: Define the view for the component.
-- **Services**: Provide data and business logic to the components.
-- **Dependency Injection**: A design pattern that Angular uses to inject services into components.
+---
 
-Unfortunately, I can't draw directly here, but imagine a diagram where:
-- Modules contain components.
-- Components have a template and are connected to services through dependency injection.
+**How does an Angular application work?**
 
-### 4. **What is metadata?**
-Metadata is used to decorate a class in Angular to define how it should behave. For example, when you create a component, you use the `@Component` decorator to provide metadata like the component's selector, template, and styles.
+An Angular application works by building a Single Page Application (SPA). It starts by loading an index.html file, which contains a root element. Angular takes control of the root element and dynamically updates the content based on user interactions and application logic. Angular uses components, services, directives, and modules to manage the application's structure and behavior. When a user interacts with the app, Angular's data binding updates the view automatically without reloading the entire page.
 
-### 5. **What is the difference between constructor and ngOnInit?**
-- **Constructor**: A special method of the class that is called when an instance of the class is created. It's used to initialize class members.
-- **ngOnInit**: A lifecycle hook in Angular that is called after the constructor. It's commonly used to perform initialization tasks after Angular has set up the component (like fetching data).
+**What is TypeScript?**
 
-### 6. **How is Dependency Hierarchy formed?**
-In Angular, dependencies (like services) can be provided at different levels in the app: 
-- **Root Level**: Services are available throughout the app.
-- **Component Level**: Services are specific to a component and its children.
-This forms a hierarchy where child components can inherit services from their parent components or the root.
+TypeScript is a superset of JavaScript that adds static types and other features, such as classes, interfaces, and modules, to make code more robust and maintainable. Angular is built using TypeScript, allowing developers to write cleaner, more predictable code that is easier to debug.
 
-### 7. **What is the purpose of the async pipe?**
-The `async` pipe in Angular is used to subscribe to an observable or a promise directly in the template. It automatically handles unsubscribing when the component is destroyed, which helps in avoiding memory leaks.
+**Write a pictorial diagram of Angular architecture.**
 
-### 8. **What is the option to choose between inline and external templates?**
-- **Inline Templates**: HTML code is directly within the component’s TypeScript file.
-- **External Templates**: HTML code is placed in a separate HTML file.
-The choice depends on the complexity of the template. Inline is good for simple, short templates, while external is better for more complex HTML.
+Unfortunately, I cannot create pictorial diagrams directly, but I can describe it. Angular architecture includes:
 
-### 9. **What is the purpose of the ‘ngFor’ directive?**
-The `ngFor` directive is used in Angular to loop over a collection (like an array) and render a template for each item in the collection.
+1. **Modules:** Organize the app into cohesive blocks of functionality.
+2. **Components:** Define views and behaviors of the app.
+3. **Templates:** HTML with Angular directives and binding syntax.
+4. **Services:** Business logic and data handling.
+5. **Dependency Injection:** Manages the lifecycle of services.
+6. **Directives:** Custom behaviors added to elements in the DOM.
+7. **Routing:** Handles navigation between views.
 
-### 10. **What is the purpose of the ngIf directive?**
-The `ngIf` directive is used to conditionally include or exclude an element from the DOM based on a Boolean expression. If the expression evaluates to true, the element is included; otherwise, it’s not rendered.
+**What is metadata?**
 
-### 11. **What happens if you use the script tag inside the template?**
-Angular templates do not allow the use of the `<script>` tag as it can lead to security vulnerabilities like Cross-Site Scripting (XSS). If you need to add scripts, you should do so in the HTML file of the document or through Angular's `Renderer2` service for dynamic script loading.
+Metadata in Angular is used to provide additional information about a class. It is added using decorators, such as `@Component`, `@NgModule`, etc. For example, the `@Component` decorator adds metadata to a class to define it as a component and provides details like the template, styles, and selector.
 
-### 12. **What are template statements?**
-Template statements are methods or properties defined in your component class that are executed in response to user events like clicks. For example, `(click)="doSomething()"` in a template will call the `doSomething` method in the component class when the element is clicked.
+**What is the difference between constructor and ngOnInit?**
 
-### 13. **How do you categorize data binding types?**
-Angular provides several types of data binding:
-- **Interpolation**: Binding data from the component to the template using `{{}}`.
-- **Property Binding**: Binding data to an element’s property like `[src]`.
-- **Event Binding**: Binding an event from the template to the component using `()`.
-- **Two-way Binding**: Combines property and event binding using `[(ngModel)]`.
+- **Constructor:** This is a default method that is called when a class is instantiated. It's used for dependency injection and initializing class members.
+- **ngOnInit:** This is a lifecycle hook provided by Angular, which is called after the component's constructor and after Angular has initialized all the data-bound properties. It's typically used for additional initialization tasks that require the component to be fully set up.
 
-### 14. **What is a parameterized pipe?**
-A parameterized pipe in Angular is a pipe that can take arguments to customize its output. For example, `{{ dateValue | date:'shortDate' }}` where `'shortDate'` is the parameter that formats the date.
+**How is Dependency Hierarchy formed?**
 
-### 15. **What are custom elements?**
-Custom elements are a web standard for defining new HTML elements in a framework-agnostic way. Angular allows you to create custom elements from Angular components, which can be used in any HTML page.
+In Angular, a dependency hierarchy is formed by injecting services into components, where services can be provided at different levels of the component tree. When a service is provided at a module level, it is available to all components in that module. When provided at a component level, it is only available to that component and its children, creating a hierarchical structure.
 
-### 16. **Do I need to bootstrap custom elements?**
-No, you don't need to bootstrap custom elements in Angular. Once they are created, they can be added directly to the HTML like standard elements.
+**What is the purpose of the async pipe?**
 
-### 17. **How do you define typings for custom elements?**
-When creating custom elements, you can define typings in TypeScript to describe the attributes and methods your custom element should have, ensuring type safety.
+The `async` pipe in Angular is used to automatically subscribe to an observable or promise and get the latest emitted value. It also automatically unsubscribes when the component is destroyed, preventing memory leaks.
 
-### 18. **Explain how custom elements work internally.**
-Custom elements work by using the browser’s native APIs to create custom HTML tags. Angular wraps components into these custom elements, allowing them to function as native HTML elements with encapsulated behavior and styles.
+**What is the option to choose between inline and external templates?**
 
-### 19. **How to transfer components to custom elements?**
-You can use Angular’s `createCustomElement` function to convert Angular components into custom elements. Once converted, these elements can be used in the same way as any other HTML element.
+In Angular, templates can be defined either inline, within the `@Component` decorator using the `template` property, or in an external HTML file using the `templateUrl` property. Inline templates are suitable for simple and small views, while external templates are better for more complex layouts.
 
-### 20. **What are the mapping rules between Angular components and custom elements?**
-Angular maps component properties to custom element attributes and events to custom element events. This allows the custom element to be interacted with like a normal HTML element while still utilizing Angular’s powerful features.
+**What is the purpose of the ‘ngFor’ directive?**
 
-### 21. **How are observables different from promises?**
-- **Promises**: Handle a single asynchronous event at a time. They either resolve or reject.
-- **Observables**: Can handle multiple asynchronous events over time. They are more powerful as they can emit multiple values and can be canceled.
+The `ngFor` directive is used to loop through an array and repeat a block of HTML for each item in the array. It is commonly used for rendering lists in Angular.
 
-### 22. **What is a custom pipe?**
-A custom pipe is a user-defined transformation logic that you can create in Angular. It is used to transform data in templates. For example, you might create a custom pipe to format phone numbers.
+**What is the purpose of the ngIf directive?**
 
-### 23. **Give an example of a custom pipe.**
+The `ngIf` directive conditionally includes or excludes a block of HTML based on a Boolean expression. If the expression evaluates to true, the block is included; otherwise, it is removed from the DOM.
+
+**What happens if you use the script tag inside the template?**
+
+Using the `<script>` tag inside an Angular template is generally discouraged because Angular sanitizes the HTML to prevent XSS (Cross-Site Scripting) attacks. The `<script>` tag will be removed, and any JavaScript code inside it will not be executed.
+
+**What are template statements?**
+
+Template statements are expressions or methods that respond to user actions in Angular templates. They are usually bound to events like clicks or input changes and are defined using event binding syntax, such as `(click)="onClick()"`.
+
+**How do you categorize data binding types?**
+
+Data binding in Angular can be categorized into:
+1. **Interpolation:** Binding data from the component to the template using `{{ }}`.
+2. **Property Binding:** Binding component data to DOM properties using `[property]="value"`.
+3. **Event Binding:** Binding DOM events to component methods using `(event)="method()"`.
+4. **Two-way Binding:** Combining property and event binding to keep the data in sync using `[(ngModel)]`.
+
+**What is a parameterized pipe?**
+
+A parameterized pipe in Angular allows you to pass arguments to a pipe for custom transformations. For example, in `{{ value | date:'short' }}`, `date` is the pipe, and `'short'` is the parameter.
+
+**What are custom elements?**
+
+Custom elements are a web standard for defining new HTML tags using the browser's built-in APIs. Angular allows you to create custom elements from Angular components, which can then be used in any web application.
+
+**Do I need to bootstrap custom elements?**
+
+No, custom elements do not need to be bootstrapped like Angular components. Once defined and registered with the browser, they can be used directly in the HTML.
+
+**How do you define typings for custom elements?**
+
+Typings for custom elements can be defined using TypeScript interfaces, where you specify the properties and methods that the custom element exposes. This helps in providing type safety when using custom elements in Angular or other TypeScript projects.
+
+**Explain how custom elements work internally.**
+
+Custom elements work by extending the `HTMLElement` class and defining the element's behavior in its lifecycle methods like `connectedCallback`, `disconnectedCallback`, `attributeChangedCallback`, etc. Angular provides tools to convert Angular components into custom elements, making them compatible with the Custom Elements API.
+
+**How to transfer components to custom elements?**
+
+To transfer Angular components to custom elements, you use the `@angular/elements` package, which wraps the component logic and turns it into a custom element that can be used in any HTML page.
+
+**What are the mapping rules between Angular components and custom elements?**
+
+The mapping rules between Angular components and custom elements include:
+1. **Inputs:** Component @Input properties become attributes on the custom element.
+2. **Outputs:** Component @Output events are exposed as custom events.
+3. **Lifecycle:** Angular component lifecycle hooks are mapped to the custom element lifecycle callbacks.
+
+**How are observables different from promises?**
+
+Observables are more powerful than promises because:
+1. **Multiple Values:** Observables can emit multiple values over time, while promises resolve only once.
+2. **Lazy Execution:** Observables are lazy; they only execute when subscribed to, while promises execute immediately.
+3. **Operators:** Observables support operators like `map`, `filter`, `merge`, etc., which makes it easier to work with streams of data.
+
+**What is a custom pipe?**
+
+A custom pipe in Angular allows you to create your own transformation logic for displaying data. You define a custom pipe by implementing the `PipeTransform` interface and decorating the class with `@Pipe`.
+
+**Give an example of a custom pipe.**
+
 ```typescript
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'phoneNumber'})
-export class PhoneNumberPipe implements PipeTransform {
+@Pipe({ name: 'exclaim' })
+export class ExclaimPipe implements PipeTransform {
   transform(value: string): string {
-    // Format a 10-digit phone number
-    return `(${value.substr(0, 3)}) ${value.substr(3, 3)}-${value.substr(6)}`;
+    return value + '!';
   }
 }
 ```
-Usage in template: `{{ '1234567890' | phoneNumber }}`
+This custom pipe adds an exclamation mark to a string.
 
-### 24. **What is the difference between pure and impure pipe?**
-- **Pure Pipe**: Executes only when the input changes. They are stateless and are the most common type of pipes.
-- **Impure Pipe**: Executes every time a change detection runs, even if the input hasn't changed. They can be stateful but are less efficient.
+**What is the difference between pure and impure pipe?**
 
-### 25. **What is a bootstrapping module?**
-The bootstrapping module in Angular is the root module that Angular uses to start the application. It’s usually the `AppModule`, where you specify the root component that should be rendered.
+- **Pure Pipe:** A pure pipe only executes when the input data changes. It is stateless and does not cause performance issues.
+- **Impure Pipe:** An impure pipe executes every time change detection runs, regardless of input changes. It can lead to performance issues but is useful in cases where the pipe's output depends on external factors.
 
-### 26. **Explain how to use HttpClient with an example.**
-`HttpClient` is used to make HTTP requests in Angular. Here's a simple example to fetch data from an API:
+**What is a bootstrapping module?**
+
+A bootstrapping module in Angular is the root module that Angular uses to bootstrap the application. It typically includes the `@NgModule` decorator, which defines the components, directives, and services that the app will use. The `bootstrap` array in this module specifies the root component to load.
+
+**Explain how to use HttpClient with an example.**
+
+HttpClient is used in Angular to make HTTP requests. Here’s a simple example:
+
 ```typescript
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -118,204 +149,249 @@ import { Injectable } from '@angular/core';
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  getData() {
+  getData(): Observable<any> {
     return this.http.get('https://api.example.com/data');
   }
 }
 ```
 
-### 27. **What are lifecycle hooks in Angular?**
-Lifecycle hooks are methods that Angular calls at specific points in the lifecycle of a component. Some examples include:
-- `ngOnInit`: Called once the component is initialized.
-- `ngOnDestroy`: Called just before the component is destroyed.
-These hooks allow you to execute logic during specific phases of the component's lifecycle.
+**What are lifecycle hooks in Angular?**
 
-### 28. **What are templates?**
-Templates in Angular define the view for a component. They can include HTML, Angular directives, and binding syntax to display data and handle user interactions.
+Lifecycle hooks are methods that Angular calls at different stages of a component's lifecycle:
+1. **ngOnInit:** Called after the component is initialized.
+2. **ngOnChanges:** Called when input properties change.
+3. **ngDoCheck:** Called during change detection.
+4. **ngOnDestroy:** Called before the component is destroyed.
 
-### 29. **How can you read the full response?**
-To read the full HTTP response, including headers, you can use the `observe` option with `HttpClient`:
+**What are templates?**
+
+Templates in Angular are HTML views where you define the structure and layout of the component. Templates use Angular's binding syntax, directives, and expressions to display dynamic data.
+
+**How can you read the full response?**
+
+To read the full response, including headers, status code, etc., you can use the `observe` option in the `HttpClient` method:
+
 ```typescript
-this.http.get('https://api.example.com/data', { observe: 'response' }).subscribe(response => {
- 
-
- console.log(response.headers);
-  console.log(response.body);
-});
+this.http.get('https://api.example.com/data', { observe: 'response' })
+  .subscribe(response => {
+    console.log(response.headers);
+    console.log(response.status);
+    console.log
+(response.body);
+  });
 ```
 
-### 30. **How do you perform Error handling?**
-Error handling in Angular can be done using the `catchError` operator in RxJS:
+**How do you perform Error handling?**
+
+Error handling in Angular can be done using `catchError` in RxJS operators or by handling errors in the component:
+
 ```typescript
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 this.http.get('https://api.example.com/data')
-  .pipe(
-    catchError(error => {
-      console.error('Error:', error);
-      return throwError(error);
-    })
-  )
-  .subscribe();
+  .pipe(catchError(error => {
+    console.error('An error occurred:', error);
+    return throwError(error);
+  }))
+  .subscribe(data => {
+    console.log(data);
+  });
 ```
 
-### 31. **What is content projection?**
-Content projection is a way to pass content from a parent component into a child component's template. This allows you to create reusable components with customizable content. Angular uses `<ng-content></ng-content>` to project content into the template.
+**What is content projection?**
 
-### 32. **What is the difference between PROMISE & OBSERVABLES?**
-- **Promises**: Handle a single async event. They are eager, meaning they start executing immediately.
-- **Observables**: Handle multiple async events. They are lazy, meaning they only start executing when subscribed to.
+Content projection allows you to insert dynamic content into a component using `<ng-content>`. It is useful for creating reusable components with customizable content.
 
-### 33. **What do you mean by data binding?**
-Data binding in Angular is a technique to link your component's data with the UI. It ensures that changes in the component's data automatically reflect in the UI and vice versa.
+**What is the difference between PROMISE & OBSERVABLES?**
 
-### 34. **What do you mean by string interpolation?**
-String interpolation is a form of data binding in Angular where you embed expressions within `{{}}` in the template to display dynamic data.
+The difference includes:
+- **Promises:** Handle a single value, resolve once, and are eager (execute immediately).
+- **Observables:** Handle multiple values, are lazy (execute only when subscribed to), and provide operators for transformation and composition.
 
-### 35. **What are the differences between Angular decorator and annotation?**
-- **Decorators**: In Angular, decorators are used to add metadata to classes, methods, properties, or parameters. Example: `@Component`.
-- **Annotations**: Annotations were used in earlier versions of Angular but have been replaced by decorators. Decorators are a more general and flexible approach to metadata.
+**What do you mean by data binding?**
 
-### 36. **What is an AOT compilation in Angular?**
-AOT (Ahead-Of-Time) compilation is a process where Angular compiles the application during the build phase, rather than at runtime. This leads to faster rendering and better performance.
+Data binding refers to the synchronization between the component’s data and the template. It ensures that changes in the component data are reflected in the view and vice versa.
 
-### 37. **What are the advantages of AOT?**
-- **Faster Rendering**: Since the code is compiled beforehand.
-- **Smaller Angular Framework**: Unused parts of Angular are not included.
-- **Detects Errors Earlier**: Errors are caught during the build time, not at runtime.
-- **Improved Security**: Templates are compiled before deployment, reducing the risk of injection attacks.
+**What do you mean by string interpolation?**
 
-### 38. **What are the three phases of AOT?**
-1. **Code Analysis**: Angular checks the code for any errors.
-2. **Code Generation**: Angular generates the necessary JavaScript code.
-3. **Template Type Checking**: Ensures that the bindings in the templates are type-safe.
+String interpolation is a way to bind data from the component to the template using double curly braces `{{ }}`. It allows dynamic data to be inserted into the HTML.
 
-### 39. **What are the components in Angular?**
-Components are the basic building blocks of Angular applications. They consist of:
-- **Class**: Handles the logic.
-- **Template**: Defines the view.
-- **Styles**: Define the appearance.
-- **Metadata**: Describes how the component should behave.
+**What are the differences between Angular decorator and annotation?**
 
-### 40. **What are dynamic components?**
-Dynamic components are components that are created and added to the DOM at runtime, rather than being predefined in the template. Angular provides services like `ComponentFactoryResolver` to create these components dynamically.
+In Angular:
+- **Decorator:** A function that adds metadata to classes, methods, properties, or parameters. Examples include `@Component`, `@Injectable`, etc.
+- **Annotation:** A term used in older versions of Angular for what we now refer to as decorators. They are conceptually similar.
 
-### 41. **What is the purpose of the base href tag?**
-The `<base href>` tag in the HTML document specifies the base URL for all relative URLs in the application. Angular uses this to resolve relative paths to resources like scripts and styles.
+**What is an AOT compilation in Angular?**
 
-### 42. **What are modules in Angular?**
-Modules in Angular are containers for organizing an application into cohesive blocks of functionality. They group related components, directives, services, etc., and provide a way to manage dependencies and lazy loading.
+Ahead-of-Time (AOT) compilation is the process of converting Angular HTML and TypeScript code into JavaScript code before the application is run in the browser. This results in faster rendering and fewer runtime errors.
 
-### 43. **What is DOM?**
-DOM (Document Object Model) is a programming interface for web documents. It represents the structure of the HTML document as a tree of objects, allowing scripts to interact with and manipulate the content, structure, and style of a web page.
+**What are the advantages of AOT?**
 
-### 44. **What are services in Angular?**
-Services in Angular are used to encapsulate reusable logic that can be shared across different components. They are typically used for tasks like fetching data from an API, performing business logic, or managing state.
+Advantages include:
+- **Faster Rendering:** Compiled code is faster to execute.
+- **Smaller Bundle Size:** Unused code is removed during compilation.
+- **Fewer Runtime Errors:** Errors are caught at compile time.
 
-### 45. **What is two-way data binding?**
-Two-way data binding in Angular allows changes in the component’s data to be automatically reflected in the template, and vice versa. This is often achieved using the `[(ngModel)]` directive.
+**What are the three phases of AOT?**
 
-### 46. **What are pipes in Angular?**
-Pipes are a way to transform data in Angular templates. They take an input value, process it, and return a transformed value. Angular provides built-in pipes like `date`, `uppercase`, and `currency`, but you can also create custom pipes.
+The three phases are:
+1. **Parsing:** Angular parses the templates and TypeScript code.
+2. **Compilation:** Angular compiles the code into JavaScript.
+3. **Bundling:** The compiled code is bundled into a single or a few files for efficient loading.
 
-### 47. **What are observables in Angular?**
-Observables are a powerful way to work with asynchronous data streams in Angular. They allow you to handle events, data streams, or other asynchronous operations. Observables can emit multiple values over time and can be canceled.
+**What are the components in Angular?**
 
-### 48. **How do you chain pipes?**
-You can chain multiple pipes together in Angular templates by passing the output of one pipe as the input to another. For example:
-```html
-{{ value | date:'shortDate' | uppercase }}
+Components are the building blocks of an Angular application. Each component consists of:
+- **Template:** Defines the view.
+- **Class:** Contains the logic.
+- **Metadata:** Configures the component with decorators.
+
+**What are dynamic components?**
+
+Dynamic components are components that are created and inserted into the application at runtime, not at compile time. This allows for more flexible and reusable components.
+
+**What is the purpose of the base href tag?**
+
+The `<base href>` tag in the `index.html` file sets the base URL for all relative URLs in the application. It helps Angular handle routing correctly.
+
+**What are modules in Angular?**
+
+Modules are containers for a cohesive block of code dedicated to a particular application domain, workflow, or feature. Modules help organize an Angular application into manageable pieces.
+
+**What is DOM?**
+
+DOM (Document Object Model) represents the structure of an HTML document as a tree of nodes. Angular interacts with the DOM to update the view based on the data.
+
+**What are services in Angular?**
+
+Services are singleton classes used to encapsulate business logic, data access, or other functionalities that can be shared across components. They are injected into components and other services.
+
+**What is two-way data binding?**
+
+Two-way data binding allows synchronization of data between the component and the view. Changes in the view are reflected in the component, and changes in the component are reflected in the view, achieved using `[(ngModel)]`.
+
+**What are pipes in Angular?**
+
+Pipes are used to transform data in templates. Angular provides built-in pipes like `DatePipe` and `CurrencyPipe`, and you can also create custom pipes.
+
+**What are observables in Angular?**
+
+Observables are a way to handle asynchronous data streams. They provide methods to subscribe to data changes and process multiple values over time. Angular uses RxJS to handle observables.
+
+**How do you chain pipes?**
+
+You can chain pipes in Angular templates by using the pipe operator (`|`). For example, `{{ value | date | uppercase }}` applies the `date` pipe followed by the `uppercase` pipe.
+
+**What does Angular Material mean?**
+
+Angular Material is a UI component library for Angular that provides reusable, well-designed components following Material Design principles.
+
+**What is RxJS?**
+
+RxJS (Reactive Extensions for JavaScript) is a library for reactive programming using observables. It provides operators to work with asynchronous data streams and handle events.
+
+**What is bootstrapping?**
+
+Bootstrapping is the process of initializing and starting an Angular application. It involves loading the root module and component to kick off the application.
+
+**What do you mean by dependency injection?**
+
+Dependency injection (DI) is a design pattern used to implement IoC (Inversion of Control). It allows Angular to provide dependencies to classes, such as services, rather than having the classes create their own dependencies.
+
+**What is the digest cycle process in Angular?**
+
+The digest cycle is Angular’s way of checking for changes in the application. During each cycle, Angular compares the current and previous values of data-bound properties and updates the DOM if any changes are detected.
+
+**What are the distinct types of Angular filters?**
+
+Angular uses pipes instead of filters. Pipes include `DatePipe`, `CurrencyPipe`, `DecimalPipe`, etc., for formatting data in the view.
+
+**How can one create a service in Angular?**
+
+You can create a service in Angular using the Angular CLI:
+
+```bash
+ng generate service my-service
 ```
 
-### 49. **What does Angular Material mean?**
-Angular Material is a UI component library for Angular applications, based on Google’s Material Design principles. It provides reusable and customizable UI components like buttons, forms, and dialogs.
+This creates a service file with a class decorated with `@Injectable()`, allowing it to be injected into components or other services.
 
-### 50. **What is RxJS?**
-RxJS (Reactive Extensions for JavaScript) is a library for composing asynchronous and event-based programs using observables. It provides powerful operators to handle data streams in Angular.
+**What is an Angular Router?**
 
-### 51. **What is bootstrapping?**
-Bootstrapping in Angular is the process of initializing or starting the application. It involves loading the root module (typically `AppModule`) and rendering the root component (typically `AppComponent`).
+Angular Router is a module that allows navigation between different views or components in a single-page application. It helps in setting up routes and handling client-side navigation.
 
-### 52. **What do you mean by dependency injection?**
-Dependency injection (DI) is a design pattern in Angular where dependencies (like services) are provided to components rather than being created within the components. This makes the components more modular, testable, and easier to manage.
+**What is the purpose of the common module in Angular?**
 
-### 53. **What is the digest cycle process in Angular?**
-The digest cycle is a concept from AngularJS (the older version of Angular) where AngularJS checks for changes in the data and updates the view. This concept is not directly used in Angular (Angular 2+), which uses a more efficient change detection mechanism.
+The CommonModule provides common directives like `ngIf`, `ngFor`, and pipes like `DatePipe` and `CurrencyPipe` used in Angular applications. It is typically imported in feature modules.
 
-### 54. **What are the distinct types of Angular filters?**
-In AngularJS, filters were used to format data in the view. In Angular (Angular 2+), this concept is replaced by pipes.
+**What is the scope of Angular?**
 
-### 55. **How can one create a service in Angular?**
-You can create a service in Angular using the Angular CLI with the command `ng generate service my-service`. This generates a service class that you can use to encapsulate business logic or data-fetching operations.
+Angular’s scope refers to its capability to build web applications with rich user interfaces, client-side routing, and dependency injection. Angular is designed for building single-page applications with a component-based architecture.
 
-### 56. **What is an Angular Router?**
-The Angular Router is a tool that allows you to navigate between different views or pages in your application. It handles the URL routing, manages the browser’s history, and loads the appropriate components based on the route.
+**How do you create directives using CLI?**
 
-### 57. **What is the purpose of the common module in Angular?**
-The `CommonModule` in Angular provides common directives like `ngIf` and `ngFor`, which are used in almost every Angular application. It's automatically imported when you create a new Angular module.
+You can create a directive using Angular CLI with:
 
-### 58. **What is the scope of Angular?**
-The scope of Angular is to provide a complete framework for building modern web applications. It includes tools for managing data, creating components, handling routing, and working with services, all while maintaining a strong emphasis on performance, modularity, and developer productivity.
-
-### 59. **How do you create directives using CLI?**
-You can create directives in Angular using the Angular CLI with the command `ng generate directive my-directive`. This generates a directive class that you can use to add custom behavior to elements in your templates.
-
-### 60. **What is a rule in Schematics?**
-A rule in Angular Schematics defines a set of transformations that can be applied to a project. It’s used to automate code generation, modification, and other tasks related to Angular development.
-
-### 61. **What is Schematics CLI?**
-Schematics CLI is a tool provided by Angular to create, manage, and apply schematics. Schematics are templates or scripts that automate tasks like code generation or project updates.
-
-### 62. **What is HttpClient, and what are its benefits?**
-`HttpClient` is Angular’s built-in service for making HTTP requests to a backend server. It provides methods to perform CRUD (Create, Read, Update, Delete) operations and supports features like observables, interceptors, and error handling.
-
-### 63. **What is multicasting in Angular?**
-Multicasting in Angular refers to the ability of an observable to share a single subscription with multiple observers. This is often achieved using operators like `shareReplay` or subjects.
-
-### 64. **What is a directive in Angular?**
-A directive in Angular is a class that can modify the behavior or appearance of elements in the DOM. There are three types of directives:
-- **Component Directives**: Attach a view to the element.
-- **Structural Directives**: Change the structure of the DOM (e.g., `ngIf`, `ngFor`).
-- **Attribute Directives**
-
-: Change the appearance or behavior of an element (e.g., `ngClass`, `ngStyle`).
-
-### 65. **What is RxJS, and why is it used?**
-RxJS is a library for handling asynchronous data streams in Angular. It is used because it provides powerful operators to work with observables, enabling complex asynchronous data handling with a declarative syntax.
-
-### 66. **Explain Modules in Angular.**
-Modules in Angular are used to group related components, directives, services, etc., into a cohesive block of functionality. The root module, typically `AppModule`, is the entry point of the application, while feature modules group related features together and can be lazy-loaded for better performance.
-
-### 67. **What is lazy loading in Angular?**
-Lazy loading in Angular is a technique to load feature modules only when they are needed, rather than loading them upfront. This improves the initial load time of the application by splitting the app into smaller bundles that are loaded on demand.
-
-### 68. **What are the data binding concepts in Angular?**
-Angular provides four main data binding concepts:
-1. **Interpolation**: Binding a component property to the view.
-2. **Property Binding**: Binding an element’s property to a component property.
-3. **Event Binding**: Binding an element’s event to a component method.
-4. **Two-Way Binding**: Binding both the data and the event, so changes in the UI or data update each other.
-
-### 69. **How to create an observable in Angular?**
-You can create an observable in Angular using the `Observable` constructor from RxJS:
-```typescript
-import { Observable } from 'rxjs';
-
-const observable = new Observable(observer => {
-  observer.next('Hello');
-  observer.complete();
-});
-
-observable.subscribe(value => console.log(value));
+```bash
+ng generate directive my-directive
 ```
 
-### 70. **What are the components of Angular?**
-Components in Angular consist of:
-- **Selector**: Defines how the component is represented in the template.
-- **Template**: Defines the HTML view.
-- **Class**: Contains the logic.
-- **Styles**: Define the appearance.
-- **Metadata**: Provides additional information about the component.
+This generates a directive file with the necessary boilerplate code.
 
-These explanations should help you understand the various Angular concepts, their applications, and how they work together to create robust web applications.
+**What is a rule in Schematics?**
+
+A rule in Schematics is a function that performs operations on a set of files. Rules can modify files, add new files, or perform other tasks to customize code generation.
+
+**What is Schematics CLI?**
+
+Schematics CLI is a tool that helps you create and manage Angular project templates and scaffolding. It provides commands to generate or modify code according to predefined templates.
+
+**What is HttpClient, and what are its benefits?**
+
+`HttpClient` is a service in Angular for making HTTP requests. Benefits include:
+- Simplified API for handling HTTP operations.
+- Integration with RxJS for handling asynchronous data.
+- Built-in support for request and response transformation.
+
+**What is multicasting in Angular?**
+
+Multicasting in Angular refers to sharing a single observable subscription among multiple subscribers. This can be achieved using RxJS operators like `share()` or `publish()`.
+
+**What is a directive in Angular?**
+
+A directive is a class that allows you to add behavior to elements in the DOM. Directives can be structural (like `*ngIf`), attribute-based (like `ngClass`), or custom directives that you define.
+
+**What will happen if you do not supply a handler for an observer?**
+
+If you do not supply a handler for an observer, the observable will not perform any action or respond to data changes. The `next`, `error`, and `complete` methods should be provided to handle the emitted values, errors, and completion signals.
+
+**What are angular elements?**
+
+Angular Elements are Angular components that have been converted into custom elements (web components) using Angular’s `@angular/elements` package. They can be used in non-Angular applications or with other frameworks.
+
+**What is the browser support of Angular Elements?**
+
+Angular Elements are supported in modern browsers, including Chrome, Firefox, Safari, and Edge. They work on browsers that support the Custom Elements and Shadow DOM specifications.
+
+**What is the role of SPA in Angular?**
+
+SPA (Single Page Application) in Angular means that the application loads a single HTML page and dynamically updates the content as users interact with the app, providing a smoother user experience without full page reloads.
+
+**What are Angular building blocks?**
+
+Angular building blocks include:
+- **Modules:** Organize application functionality.
+- **Components:** Define views and logic.
+- **Services:** Encapsulate business logic.
+- **Directives:** Add behavior to DOM elements.
+- **Pipes:** Transform data for display.
+
+**Explain the MVVM architecture.**
+
+MVVM (Model-View-ViewModel) is an architectural pattern where:
+- **Model:** Represents the data and business logic.
+- **View:** Displays the data to the user.
+- **ViewModel:** Acts as an intermediary,
+
