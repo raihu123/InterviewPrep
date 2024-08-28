@@ -8,8 +8,7 @@ An Angular application works by building a Single Page Application (SPA). It sta
 TypeScript is a superset of JavaScript that adds static types and other features, such as classes, interfaces, and modules, to make code more robust and maintainable. Angular is built using TypeScript, allowing developers to write cleaner, more predictable code that is easier to debug.
 
 **Write a pictorial diagram of Angular architecture.**
-
-Unfortunately, I cannot create pictorial diagrams directly, but I can describe it. Angular architecture includes:
+![angular-architecture](https://iq.js.org/questions/angular/4/4-1.png)
 
 1. **Modules:** Organize the app into cohesive blocks of functionality.
 2. **Components:** Define views and behaviors of the app.
@@ -21,7 +20,93 @@ Unfortunately, I cannot create pictorial diagrams directly, but I can describe i
 
 **What is metadata?**
 
-Metadata in Angular is used to provide additional information about a class. It is added using decorators, such as `@Component`, `@NgModule`, etc. For example, the `@Component` decorator adds metadata to a class to define it as a component and provides details like the template, styles, and selector.
+**Metadata** in Angular is used to provide additional information about a class, method, property, or parameter. It is a way to attach metadata (or data about data) to various parts of the Angular application, such as components, directives, and services. This metadata helps Angular understand how to process, instantiate, and use the associated class or element in the application.
+
+Metadata is defined using **decorators** (such as `@Component`, `@Directive`, `@Injectable`, etc.) that are functions prefixed with the `@` symbol. These decorators are applied to classes or properties to add metadata to them.
+
+**Types of Metadata in Angular**
+
+1. **Component Metadata (`@Component`)**:
+   - Used to define a component, which is a fundamental building block in Angular.
+   - Metadata includes information such as the component’s selector, template URL, style URLs, and other properties.
+   - Example:
+     ```typescript
+     @Component({
+       selector: 'app-hero',
+       templateUrl: './hero.component.html',
+       styleUrls: ['./hero.component.css']
+     })
+     export class HeroComponent {
+       // Component logic
+     }
+     ```
+
+2. **Directive Metadata (`@Directive`)**:
+   - Used to define a custom directive, which is a class that can modify the behavior of elements in the DOM.
+   - Similar to components, directives can have selectors and other properties but don't have templates.
+   - Example:
+     ```typescript
+     @Directive({
+       selector: '[appHighlight]'
+     })
+     export class HighlightDirective {
+       // Directive logic
+     }
+     ```
+
+3. **Service Metadata (`@Injectable`)**:
+   - Used to define a service, which is a class that provides specific functionality or data to other parts of the application.
+   - `@Injectable` metadata marks a class as a service that can be injected into components or other services.
+   - Example:
+     ```typescript
+     @Injectable({
+       providedIn: 'root'
+     })
+     export class DataService {
+       // Service logic
+     }
+     ```
+
+4. **Module Metadata (`@NgModule`)**:
+   - Defines an Angular module, which is a container for a cohesive block of code dedicated to a specific application domain, workflow, or closely related set of capabilities.
+   - Metadata includes declarations, imports, providers, and bootstrap components.
+   - Example:
+     ```typescript
+     @NgModule({
+       declarations: [AppComponent, HeroComponent],
+       imports: [BrowserModule, FormsModule],
+       providers: [HeroService],
+       bootstrap: [AppComponent]
+     })
+     export class AppModule { }
+     ```
+
+5. **Pipe Metadata (`@Pipe`)**:
+   - Used to define a pipe, which is a class that formats or transforms data for display in a template.
+   - Example:
+     ```typescript
+     @Pipe({ name: 'currencyFormatter' })
+     export class CurrencyFormatterPipe {
+       // Pipe logic
+     }
+     ```
+
+6. **Input and Output Metadata (`@Input` and `@Output`)**:
+   - Used to define input and output properties of a component or directive.
+   - `@Input` binds a property to data passed from a parent component.
+   - `@Output` binds a property to an event emitter that allows a child component to send data to its parent.
+   - Example:
+     ```typescript
+     @Component({
+       selector: 'app-child',
+       template: `<button (click)="notify.emit()">Notify</button>`
+     })
+     export class ChildComponent {
+       @Input() message: string;
+       @Output() notify = new EventEmitter();
+     }
+     ```
+
 
 **What is the difference between constructor and ngOnInit?**
 
@@ -30,7 +115,24 @@ Metadata in Angular is used to provide additional information about a class. It 
 
 **How is Dependency Hierarchy formed?**
 
-In Angular, a dependency hierarchy is formed by injecting services into components, where services can be provided at different levels of the component tree. When a service is provided at a module level, it is available to all components in that module. When provided at a component level, it is only available to that component and its children, creating a hierarchical structure.
+### How is Dependency Hierarchy Formed in Angular?
+
+In Angular, **Dependency Hierarchy** is formed based on the providers declared at different levels of the application. This hierarchy determines how services are shared across components, directives, and modules.
+
+1. **Root Level (Singleton Services):**  
+   - Services provided in the `root` injector (using `@Injectable({ providedIn: 'root' })`) are available application-wide. They are instantiated once and shared among all components, forming the top level of the hierarchy.
+
+2. **Module Level:**  
+   - Services provided in a specific module (`providers` array in `@NgModule`) are available only to components, directives, or services declared in that module. This creates a level in the hierarchy below the root.
+
+3. **Component Level:**  
+   - Services provided in a component (`providers` array in `@Component`) are unique to that component and its descendants. A new instance is created for each component, forming a more granular level in the hierarchy.
+
+**How it Works:**
+- When Angular needs a service, it starts searching from the component level up through the parent components, then to the module level, and finally to the root level.
+- This hierarchical structure allows for flexible service scopes and sharing, depending on where the service is provided.
+
+By defining providers at different levels, Angular can manage service instances and control their scope effectively.
 
 **What is the purpose of the async pipe?**
 
@@ -95,12 +197,23 @@ The mapping rules between Angular components and custom elements include:
 2. **Outputs:** Component @Output events are exposed as custom events.
 3. **Lifecycle:** Angular component lifecycle hooks are mapped to the custom element lifecycle callbacks.
 
-**How are observables different from promises?**
+**Observable vs Promise in Angular**
 
-Observables are more powerful than promises because:
-1. **Multiple Values:** Observables can emit multiple values over time, while promises resolve only once.
-2. **Lazy Execution:** Observables are lazy; they only execute when subscribed to, while promises execute immediately.
-3. **Operators:** Observables support operators like `map`, `filter`, `merge`, etc., which makes it easier to work with streams of data.
+Both **Observables** and **Promises** are used to handle asynchronous operations in Angular, but they have different characteristics and use cases.
+
+| Feature                      | **Observable**                             | **Promise**                               |
+|------------------------------|--------------------------------------------|--------------------------------------------|
+| **Emission**                 | Multiple emissions over time               | Single emission                            |
+| **Eagerness/Laziness**       | Lazy (executes on subscription)            | Eager (executes immediately)               |
+| **Cancellation**             | Can be canceled by unsubscribing           | Cannot be canceled                         |
+| **Operators**                | Has powerful operators for manipulation    | No built-in operators                      |
+| **Use Case**                 | Multiple values or events over time        | Single async operation                     |
+
+**Which to Use?**
+- **Use Observable** when you need to handle multiple values, support cancellation, or work with reactive programming.
+- **Use Promise** when you need to handle a single asynchronous result and cancellation is not required.
+
+In Angular, Observables are preferred for most asynchronous tasks due to their flexibility and integration with reactive programming.
 
 **What is a custom pipe?**
 
@@ -470,5 +583,65 @@ The `state` function in Angular animations is used to define different states of
 
 **How does Angular manage state?**
 
-Angular manages state through services, which can hold and manage the application's state. For more complex state management, libraries like NgRx or Akita can be used. These libraries implement patterns like Redux to provide a more structured and scalable way to manage state across the application.
+In Angular, **state management** is about handling and maintaining the state of an application across its different components and services. State can be data that is shared across components, such as user data, application settings, or UI state (like the visibility of a modal or the active tab).
+
+Angular provides several mechanisms for managing state:
+
+**1. Component State:**
+- **Definition:** The state that is local to a component.
+- **Management:** Managed using component properties (`@Input()`, `@Output()`) and local variables.
+- **Use Case:** Ideal for managing small, isolated state that is only relevant to a specific component, like form input values or toggling a button's state.
+
+**2. Service State:**
+- **Definition:** Shared state managed in a service that can be injected across multiple components.
+- **Management:** Angular services (singletons by default) are used to store and manage state that needs to be shared or persisted across multiple components.
+- **Use Case:** Useful for sharing state like authentication data, user preferences, or data fetched from an API.
+- **Example:** 
+  ```typescript
+  @Injectable({ providedIn: 'root' })
+  export class AppStateService {
+    private _user = new BehaviorSubject<User | null>(null);
+    user$ = this._user.asObservable();
+
+    setUser(user: User) {
+      this._user.next(user);
+    }
+  }
+  ```
+- Components can subscribe to the service's observables to get updated state.
+
+**3. NgRx/Redux State Management:**
+- **Definition:** An advanced state management solution based on the Redux pattern.
+- **Management:** Uses a central store to manage the state of the entire application using actions, reducers, and selectors.
+- **Use Case:** Suitable for large, complex applications where state management needs to be predictable, scalable, and maintainable. It helps in maintaining a single source of truth for the application's state.
+- **Example:**
+  - **Store:** A central place that holds the state of the application.
+  - **Actions:** Define state changes (like "LOAD_USER", "UPDATE_USER").
+  - **Reducers:** Pure functions that handle actions and specify how the state should change.
+  - **Selectors:** Functions that query the store to retrieve specific data.
+
+**4. RxJS for Reactive State Management:**
+- **Definition:** Uses Observables to manage state reactively.
+- **Management:** Utilizes RxJS operators to manage state changes, and the state is often represented using BehaviorSubjects or ReplaySubjects.
+- **Use Case:** Ideal for handling asynchronous data streams, complex event handling, or reactive programming patterns.
+- **Example:**
+  - **BehaviorSubject:** Used to maintain state and emit the latest value to subscribers.
+  - **ReplaySubject:** Useful when you want to cache a certain number of previous values.
+
+**5. Local and Session Storage:**
+- **Definition:** Browser-provided storage options.
+- **Management:** Uses the `localStorage` or `sessionStorage` APIs to store data that needs to persist between page reloads or user sessions.
+- **Use Case:** Suitable for caching user preferences, tokens, or data that doesn't require server-side persistence.
+
+**6. URL/Route State:**
+- **Definition:** State management using the Angular Router.
+- **Management:** URL parameters, query parameters, and route data are used to manage state across navigation.
+- **Use Case:** Best for handling state that is directly related to the current route or needs to be bookmarked/shared.
+
+**Which State Management Strategy to Use?**
+
+- **Small Applications:** Use Component State or Service State.
+- **Medium Applications:** Combine Service State and Reactive State Management using RxJS.
+- **Large Applications:** Use a state management library like NgRx, Redux, or Akita for a more structured approach.
+
 
