@@ -5,10 +5,9 @@ Prefix Sum involves preprocessing an array to create a new array where each elem
 Use this pattern when you need to perform multiple sum queries on a subarray or need to calculate cumulative sums.
 
 **Clues:**
-
-You're asked to find sums over different ranges in an array (e.g., subarrays, subranges).
-Frequent updates to an array, where recalculating sums would be inefficient.
-Questions related to cumulative sums, or checking if a subarray with a specific sum exists.
+- You're asked to find sums over different ranges in an array (e.g., subarrays, subranges).
+- Frequent updates to an array, where recalculating sums would be inefficient.
+- Questions related to cumulative sums, or checking if a subarray with a specific sum exists.
 Common problems: Range sum queries, subarray sum equal to target.
 
 ### Sample Problem:
