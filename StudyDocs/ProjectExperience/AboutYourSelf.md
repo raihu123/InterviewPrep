@@ -1,0 +1,11 @@
+I'm a software engineer with over X years of experience specializing in developing scalable solutions and optimizing system performance. In my previous role, I transformed an outdated SOA-based application into a microservices architecture using Java and Spring Boot, which enhanced system scalability and maintainability. This modernization not only aligned the application with current best practices but also improved performance.
+
+I have significant experience with Python and Angular, particularly in developing robotic process automation solutions. I led the creation of an in-house Python framework and library that reduced software development time by 50% for automation projects. Additionally, I developed an Angular dashboard integrated with ELK Stack to monitor and manage bots, which increased work efficiency by 65% and saved $500K in overhead costs.
+
+In a data integration project, I worked extensively with technologies like GCP, Kubernetes, Kafka, and Bigtable. I optimized service provider API calls and implemented multithreading in Java, achieving a 10% reduction in expenditure and increasing data ingestion efficiency by 20%. I also built multiple data transformation pipelines using Spring Batch, improving data quality by 30%.
+
+Most recently, I've been involved in optimizing AI language models using Java, Python, and TypeScript. By leveraging reinforcement learning and conducting in-depth code audits, I achieved a 15% decrease in error rates for multi-turn conversations and optimized over 100 codebases for better performance.
+
+Throughout these projects, I've consistently focused on improving efficiency, reducing costs, and enhancing system performance. I'm particularly skilled in integrating complex systems, optimizing databases, and leading teams to achieve significant productivity gains.
+
+I'm excited about the opportunity to bring my experience in scalable system architecture, automation, and AI optimization to your team, and I believe my background aligns well with the needs of this role.
