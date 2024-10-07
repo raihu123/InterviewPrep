@@ -4,29 +4,65 @@ The project involved a comprehensive transformation of an outdated Service-Orien
 
 ---
 
-**Technologies Used and Their Purpose**
+**Technologies Used and Their Purpose** : Java, Spring, Angular, Oracle, Kafka & Alfresco
 
 1. **Java and Spring Framework**
-   - **Why Used**: Java is a versatile, high-performance programming language ideal for building complex enterprise applications. The Spring Framework enhances Java with features like dependency injection and aspect-oriented programming, simplifying the development of scalable microservices.
+   - **Why Used**: The development of scalable microservices.
    - **Application in Project**: Utilized for developing independent microservices that encapsulate specific business functionalities, allowing for modular development and easier maintenance.
 
 2. **Angular**
-   - **Why Used**: Angular is a robust front-end web application framework designed for building dynamic single-page applications (SPAs). It offers two-way data binding and a rich set of features out of the box.
-   - **Application in Project**: Employed to create a responsive and interactive user interface that communicates with back-end services via RESTful APIs, enhancing the user experience.
+   - **Why Used**: Angular for front-end web application framework 
+   - **Application in Project**: communicates with back-end services via RESTful APIs
 
 3. **Oracle Database (Oracle/PLSQL)**
-   - **Why Used**: Oracle Database is known for its reliability and scalability in handling large volumes of data, making it suitable for enterprise-level applications.
+   - **Why Used**: Oracle Database ifor reliability and scalability in large volumes of data, making it suitable for enterprise-level applications.
    - **Application in Project**: Optimized existing database queries and procedures to reduce latency by 20%, leading to faster data retrieval and improved application performance.
 
 4. **Apache Kafka**
-   - **Why Used**: Kafka is a distributed streaming platform capable of handling real-time data feeds with high throughput and low latency.
+   - **Why Used**: Kafka is a distributed async platform capable of high throughput and low latency.
    - **Application in Project**: Implemented for asynchronous communication between microservices, enabling real-time data processing and decoupling services to enhance scalability.
 
 5. **Alfresco for Document Management**
-   - **Why Used**: Alfresco is an open-source enterprise content management system that provides advanced document management capabilities.
+   - **Why Used**: Alfresco is an open-source enterprise content management system 
    - **Application in Project**: Replaced a 9TB legacy file system, automating 80% of manual document handling tasks, thereby reducing manual labor and operational costs.
 
 ---
+
+```text
++------------------------+
+|      Front-End         |
+|       (Angular)        |
++-----------+------------+
+            |
+            v
++------------------------+
+|     API Gateway with   |
+|   Integrated Circuit   |
+|        Breaker         |
++-----------+------------+
+            |
+            v
+   +--------+--------+
+   |                 |
+   v                 v
++------+         +-------+
+|Customer Profile|       |
+| Registration   |       |
+|    System      |       |
++---+--+         |Customer|
+    |  |         | Profile|
+    |  |         |Document|
+    |  |         |Generator|
+    |  |         +----+----+
+    |  |              |
+    v  v              v
++---------+       +---------+
+| Oracle  |       | Alfresco|
+|Database |       |Document |
++---------+       |Management|
+                  |  System  |
+                  +---------+
+```
 
 **Architectural Transformation**
 
@@ -46,47 +82,23 @@ The project involved a comprehensive transformation of an outdated Service-Orien
 
 **Potential Challenges and Mitigation Strategies**
 
-1. **Microservices Complexity**
-   - **Challenge**: Increased complexity in managing multiple services, including deployment and monitoring.
-   - **Mitigation**: Adopt containerization (e.g., Docker) and orchestration tools (e.g., Kubernetes) for efficient deployment and scaling. Implement centralized logging and monitoring solutions.
+**Inter-Service Communication**
+ - **Challenge**: Latency and reliability in communication between services.
+ - **Mitigation**: Utilize asynchronous messaging systems like Kafka and implement retries and circuit breakers to handle failures.
 
-2. **Data Consistency**
-   - **Challenge**: Maintaining data integrity across distributed services.
-   - **Mitigation**: Use distributed transaction patterns like Saga and implement event sourcing to ensure eventual consistency.
+**Legacy System Integration**
+ - **Challenge**: Ensuring new microservices work seamlessly with remaining legacy systems.
+ - **Mitigation**: Implement APIs or middleware to bridge between old and new systems, and plan for gradual phase-out of legacy components.
 
-3. **Inter-Service Communication**
-   - **Challenge**: Latency and reliability in communication between services.
-   - **Mitigation**: Utilize asynchronous messaging systems like Kafka and implement retries and circuit breakers to handle failures.
+**Team Coordination**
+ - **Challenge**: Increased need for collaboration among teams working on different services.
+ - **Mitigation**: Foster a DevOps culture, encouraging continuous integration and continuous deployment (CI/CD) practices.
 
-4. **Security Risks**
-   - **Challenge**: More services can lead to a larger attack surface.
-   - **Mitigation**: Enforce strict authentication and authorization protocols (e.g., OAuth 2.0), and secure inter-service communication with TLS/SSL.
-
-5. **Legacy System Integration**
-   - **Challenge**: Ensuring new microservices work seamlessly with remaining legacy systems.
-   - **Mitigation**: Implement APIs or middleware to bridge between old and new systems, and plan for gradual phase-out of legacy components.
-
-6. **Team Coordination**
-   - **Challenge**: Increased need for collaboration among teams working on different services.
-   - **Mitigation**: Foster a DevOps culture, encouraging continuous integration and continuous deployment (CI/CD) practices.
-
-7. **Performance Overheads**
-   - **Challenge**: Network overhead due to inter-service calls can degrade performance.
-   - **Mitigation**: Optimize service endpoints, use load balancing, and implement caching mechanisms where appropriate.
-
----
-
-**Conclusion**
-
-By modernizing the application's architecture and leveraging technologies like Java, Spring, Angular, Kafka, and Alfresco, the project successfully enhanced scalability, maintainability, and performance. Automating manual processes and optimizing the database not only improved efficiency but also resulted in significant cost savings. While the shift to microservices introduces certain challenges, careful planning and the adoption of best practices can effectively mitigate these risks, leading to a robust and future-proof system.
+**Performance Overheads**
+ - **Challenge**: Network overhead due to inter-service calls can degrade performance.
+ - **Mitigation**: Optimize service endpoints, use load balancing, and implement caching mechanisms where appropriate.
 
 
-
-**Deep Dive into Data Consistency Challenges in Customer Profiling**
-
-In the process of transforming our application to a microservices architecture, we faced significant challenges related to data consistency, particularly while implementing the Saga pattern for managing distributed transactions. Here's a step-by-step explanation of the challenge we faced and how we mitigated it.
-
----
 
 ### **Challenge: Data Inconsistency in Customer Profiling Microservices**
 

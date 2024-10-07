@@ -1,9 +1,5 @@
 **Feature Store Project Architecture Overview**
 
-The project revolves around developing a centralized Feature Store to streamline feature engineering and storage for machine learning (ML) applications. The main objectives were to optimize database performance, reduce query response times, enhance system efficiency, and ensure seamless data migration with minimal downtime. This was achieved by leveraging technologies such as Java, Python, Apache Airflow, BigQuery, and Bigtable.
-
----
-
 ### **Technologies Used and Their Purpose**
 
 1. **Java**
