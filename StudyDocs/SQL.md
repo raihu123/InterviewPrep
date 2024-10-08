@@ -1,0 +1,333 @@
+### Types of SQL Commands (Subsets)
+1. **DDL (Data Definition Language)**: Defines and modifies database structures.
+   - Examples: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`
+   
+2. **DML (Data Manipulation Language)**: Handles data within tables.
+   - Examples: `INSERT`, `UPDATE`, `DELETE`
+   
+3. **DQL (Data Query Language)**: Retrieves data from the database.
+   - Example: `SELECT`
+   
+4. **DCL (Data Control Language)**: Manages access and permissions.
+   - Examples: `GRANT`, `REVOKE`
+   
+5. **TCL (Transaction Control Language)**: Manages database transactions.
+   - Examples: `COMMIT`, `ROLLBACK`, `SAVEPOINT`
+
+### Subqueries
+A **subquery** is a query nested inside another SQL query. It is used to filter data and perform operations in a stepwise manner.
+
+- **Types of Subqueries**:
+  - **Single-row subqueries**: Returns a single row.
+  - **Multi-row subqueries**: Returns multiple rows.
+  - **Correlated subqueries**: Subquery references columns from the outer query.
+  - **Nested subqueries**: Subqueries within subqueries.
+
+### Constraints
+Constraints enforce rules on data in a table to maintain data integrity.
+
+- **Common Constraints**:
+  - `NOT NULL`: Ensures that a column cannot have a NULL value.
+  - `UNIQUE`: Ensures all values in a column are unique.
+  - `PRIMARY KEY`: Combines `NOT NULL` and `UNIQUE` to uniquely identify each row.
+  - `FOREIGN KEY`: Links two tables by enforcing referential integrity.
+  - `CHECK`: Ensures that all values in a column meet a specified condition.
+  - `DEFAULT`: Assigns a default value if none is provided.
+
+### Joins
+A **JOIN** is used to combine rows from two or more tables based on a related column.
+
+- **Types of Joins**:
+  - **INNER JOIN**: Returns only matching rows.
+  - **LEFT JOIN**: Returns all rows from the left table and matched rows from the right table.
+  - **RIGHT JOIN**: Returns all rows from the right table and matched rows from the left table.
+  - **FULL OUTER JOIN**: Returns all matching and non-matching rows from both tables.
+  - **CROSS JOIN**: Returns the Cartesian product of two tables.
+  - **SELF JOIN**: Joins a table to itself.
+
+### Key Types
+1. **Primary Key**: Uniquely identifies each record in a table. Cannot be `NULL`.
+2. **Unique Key**: Ensures that all values in a column are unique, but can have a single `NULL` value.
+3. **Foreign Key**: A field that links one table to the primary key of another table.
+
+### Indexes
+An **index** is used to speed up the retrieval of rows from a table.
+
+- **Types of Indexes**:
+  - **Clustered Index**: Determines the physical order of data in the table. Only one per table.
+  - **Non-Clustered Index**: Does not alter the physical order but creates a separate structure for quick lookups.
+  - **Unique Index**: Ensures the uniqueness of values.
+
+### Schema
+A **schema** is a collection of database objects (tables, views, procedures) belonging to a single user.
+
+### SQL Comment
+SQL comments help annotate code for readability.
+
+- **Single-line Comment**: `--`
+- **Multi-line Comment**: `/* comment */`
+
+### Common SQL Commands
+- **Create a Table**:
+  ```sql
+  CREATE TABLE Employee (
+      ID INT PRIMARY KEY,
+      Name VARCHAR(50),
+      Age INT,
+      Department VARCHAR(50)
+  );
+  ```
+
+- **Update a Table**:
+  ```sql
+  UPDATE Employee SET Age = 30 WHERE ID = 1;
+  ```
+
+- **Sort Records**:
+  ```sql
+  SELECT * FROM Employee ORDER BY Age DESC;
+  ```
+
+- **Select Common Records from Two Tables**:
+  ```sql
+  SELECT Employee.Name FROM Employee
+  INTERSECT
+  SELECT Department.Name FROM Department;
+  ```
+
+### Entities and Relationships
+- **Entities**: Real-world objects (e.g., Employee, Department).
+- **Relationships**: Connections between entities (e.g., One-to-Many, Many-to-Many).
+
+### NULL Value
+A **NULL** value indicates missing or unknown data. It’s different from zero or a blank space, as it represents the absence of a value.
+
+### ORDER BY Default Data Ordering
+The default order is **ascending (ASC)**. Use `DESC` for descending order.
+
+### Difference Between Primary Key and Unique Key
+- **Primary Key**: Only one per table, cannot have `NULL`.
+- **Unique Key**: Can have multiple, allows a single `NULL` value.
+
+### Order of Appearance in `SELECT` Query
+1. `SELECT`
+2. `FROM`
+3. `WHERE`
+4. `GROUP BY`
+5. `HAVING`
+6. `ORDER BY`
+
+### Execution Order of `SELECT` Query
+1. `FROM`
+2. `WHERE`
+3. `GROUP BY`
+4. `HAVING`
+5. `SELECT`
+6. `ORDER BY`
+
+### DELETE vs. TRUNCATE
+- **DELETE**: Removes rows one by one and logs each deletion. Can use `WHERE`.
+- **TRUNCATE**: Removes all rows quickly, without logging each row.
+
+### `CASE` Function
+Used for conditional logic in SQL.
+
+```sql
+SELECT Name, 
+CASE 
+  WHEN Age < 18 THEN 'Minor' 
+  ELSE 'Adult' 
+END AS AgeGroup 
+FROM Employee;
+```
+
+### Clustered vs. Non-Clustered Indexes
+- **Clustered Index**: Sorts data rows in the table based on the key.
+- **Non-Clustered Index**: Creates a separate object that points to the data rows.
+
+### Nested vs. Correlated Subqueries
+- **Nested Subqueries**: Executed once for the parent query.
+- **Correlated Subqueries**: Uses values from the outer query and executes for each row.
+
+### Select Even or Odd Records
+- **Even Records**:
+  ```sql
+  SELECT * FROM Employee WHERE ID % 2 = 0;
+  ```
+- **Odd Records**:
+  ```sql
+  SELECT * FROM Employee WHERE ID % 2 <> 0;
+  ```
+
+### Prevent Duplicate Records
+Use `DISTINCT`:
+
+```sql
+SELECT DISTINCT Name FROM Employee;
+```
+
+### Insert Many Rows
+```sql
+INSERT INTO Employee (ID, Name, Age) VALUES (1, 'John', 30), (2, 'Jane', 25);
+```
+
+### Find Nth Highest Value
+```sql
+SELECT DISTINCT Salary 
+FROM Employee 
+ORDER BY Salary DESC 
+LIMIT 1 OFFSET N-1;
+```
+
+### Find Values Starting with a Letter
+```sql
+SELECT * FROM Employee WHERE Name LIKE 'A%';
+```
+
+### Find Last ID in a Table
+```sql
+SELECT MAX(ID) FROM Employee;
+```
+
+### Select Random Rows
+```sql
+SELECT * FROM Employee ORDER BY RAND() LIMIT 1;
+```
+
+
+Sure! Here are some advanced SQL questions that dive deeper into complex queries, performance optimization, and database management:
+
+### Advanced SQL Questions
+
+1. **How would you optimize a query that involves multiple `JOIN` operations on large tables?**
+   - Discuss strategies like using appropriate indexes, avoiding Cartesian joins, using `EXPLAIN` to understand execution plans, and breaking down complex joins into subqueries.
+
+2. **What is the difference between `HAVING` and `WHERE` clauses? When should each be used?**
+   - Explain how `HAVING` is used to filter aggregated results, while `WHERE` is used to filter rows before aggregation.
+
+3. **Explain what a Common Table Expression (CTE) is and how it is different from subqueries.**
+   - Discuss how CTEs use the `WITH` keyword to simplify complex queries and provide readability, especially for recursive queries.
+
+4. **Write a query to find employees who have the second-highest salary in each department.**
+   - Use window functions like `ROW_NUMBER()` or `DENSE_RANK()` partitioned by department.
+
+   ```sql
+   SELECT Department, Name, Salary
+   FROM (
+       SELECT Department, Name, Salary, 
+              DENSE_RANK() OVER (PARTITION BY Department ORDER BY Salary DESC) AS Rank
+       FROM Employee
+   ) AS RankedEmployees
+   WHERE Rank = 2;
+   ```
+
+5. **How would you implement a full outer join using `UNION` in databases that don’t support it natively?**
+   - Use `LEFT JOIN` and `RIGHT JOIN` combined with `UNION`.
+
+   ```sql
+   SELECT * FROM TableA
+   LEFT JOIN TableB ON TableA.ID = TableB.ID
+   UNION
+   SELECT * FROM TableA
+   RIGHT JOIN TableB ON TableA.ID = TableB.ID;
+   ```
+
+6. **Explain what a materialized view is and how it differs from a regular view.**
+   - Discuss how a materialized view stores query results physically, improving read performance at the cost of space and maintenance, whereas a regular view is a virtual table that doesn’t store data.
+
+7. **What are window functions, and how would you use them to calculate a running total of sales?**
+   - Introduce `SUM() OVER` and other window functions.
+
+   ```sql
+   SELECT OrderID, CustomerID, OrderAmount,
+          SUM(OrderAmount) OVER (ORDER BY OrderDate) AS RunningTotal
+   FROM Orders
+   ORDER BY OrderDate;
+   ```
+
+8. **How would you identify and delete duplicate records from a table without using a temporary table?**
+   - Use `ROW_NUMBER()` with `PARTITION` to find and delete duplicates.
+
+   ```sql
+   DELETE FROM Employee
+   WHERE ID NOT IN (
+       SELECT MIN(ID)
+       FROM Employee
+       GROUP BY Name, Department, Age
+   );
+   ```
+
+9. **Explain indexing in detail. What factors should be considered when creating indexes?**
+   - Discuss composite indexes, covering indexes, and how index selectivity impacts query performance.
+
+10. **What are some pitfalls of using the `NOT IN` clause in subqueries, and how can you replace it with `NOT EXISTS` for better performance?**
+    - Explain how `NOT IN` can lead to unexpected results with `NULL` values and compare it with `NOT EXISTS`.
+
+11. **How would you design a database schema for handling hierarchical data (e.g., organizational charts)?**
+    - Discuss `Adjacency List Model` and `Nested Set Model`. Provide SQL examples for recursive queries.
+
+12. **What are `triggers` in SQL, and how would you use them to automatically update a log table whenever a record is inserted into a specific table?**
+    - Show how to create a `BEFORE INSERT` or `AFTER INSERT` trigger to capture changes.
+
+    ```sql
+    CREATE TRIGGER LogInsertion
+    AFTER INSERT ON Employee
+    FOR EACH ROW
+    BEGIN
+        INSERT INTO EmployeeLog (ID, Action, Timestamp)
+        VALUES (NEW.ID, 'INSERTED', NOW());
+    END;
+    ```
+
+13. **How would you pivot a table in SQL to convert rows into columns?**
+    - Use `CASE` statements or the `PIVOT` function (in SQL Server) to transform rows into columns.
+
+    ```sql
+    SELECT Department,
+           SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS MaleCount,
+           SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS FemaleCount
+    FROM Employee
+    GROUP BY Department;
+    ```
+
+14. **What is sharding, and how does it differ from partitioning? When would you use each technique?**
+    - Discuss horizontal and vertical sharding for large-scale databases and when to apply partitioning within a single database to optimize query performance.
+
+15. **Write a query to find gaps in a sequence of numbers in a table.**
+    - Use `LEAD()` or `LAG()` window functions.
+
+    ```sql
+    SELECT ID + 1 AS MissingID
+    FROM Employee
+    WHERE NOT EXISTS (
+        SELECT 1 FROM Employee E WHERE E.ID = Employee.ID + 1
+    );
+    ```
+
+16. **Explain the difference between OLTP (Online Transaction Processing) and OLAP (Online Analytical Processing). How does the database design differ?**
+    - Discuss normalization in OLTP for write efficiency and denormalization in OLAP for read efficiency.
+
+17. **How would you create a recursive CTE to traverse a hierarchical structure, like finding all subordinates of a manager?**
+    - Use the `WITH RECURSIVE` clause.
+
+    ```sql
+    WITH RECURSIVE Subordinates AS (
+        SELECT EmployeeID, ManagerID, Name
+        FROM Employee
+        WHERE ManagerID IS NULL
+        UNION ALL
+        SELECT E.EmployeeID, E.ManagerID, E.Name
+        FROM Employee E
+        INNER JOIN Subordinates S ON E.ManagerID = S.EmployeeID
+    )
+    SELECT * FROM Subordinates;
+    ```
+
+18. **What are ACID properties, and how do they impact database transactions?**
+    - Describe `Atomicity`, `Consistency`, `Isolation`, and `Durability` in the context of transaction management.
+
+19. **How would you perform a cross-database query, and what are the challenges involved?**
+    - Discuss syntax variations across database platforms and potential issues like permissions and schema differences.
+
+20. **How would you handle schema changes in a production environment without downtime?**
+    - Strategies: zero-downtime deployment, online schema change tools, and backward-compatible changes.
