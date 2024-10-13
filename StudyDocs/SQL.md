@@ -245,89 +245,204 @@ Sure! Here are some advanced SQL questions that dive deeper into complex queries
    ORDER BY OrderDate;
    ```
 
-8. **How would you identify and delete duplicate records from a table without using a temporary table?**
-   - Use `ROW_NUMBER()` with `PARTITION` to find and delete duplicates.
 
+**8. How would you identify and delete duplicate records from a table without using a temporary table?**
+To delete duplicate records from a table without using a temporary table, you can use the `ROW_NUMBER()` window function to assign unique row numbers to duplicates and then delete based on these numbers.
+
+#### Example:
+```sql
+WITH RankedEmployees AS (
+    SELECT ID, 
+           ROW_NUMBER() OVER (PARTITION BY Name, Department, Age ORDER BY ID) AS row_num
+    FROM Employee
+)
+DELETE FROM Employee
+WHERE ID IN (SELECT ID FROM RankedEmployees WHERE row_num > 1);
+```
+
+- **Explanation**:
+  - `ROW_NUMBER()` assigns a unique rank (`row_num`) to each duplicate record based on `Name`, `Department`, and `Age`.
+  - The `PARTITION BY` clause groups the records, and `ORDER BY ID` ensures consistent ordering.
+  - The query deletes rows where `row_num` is greater than 1, keeping only the first occurrence.
+
+**Explain indexing in detail. What factors should be considered when creating indexes?**
+Indexes speed up data retrieval in a database by providing a quick lookup mechanism. However, they also increase storage size and can slow down insert and update operations. When creating indexes, consider:
+
+- **Types of Indexes**:
+  - **Single Column Index**: Indexes based on a single column.
+  - **Composite Index**: Indexes based on multiple columns.
+  - **Clustered Index**: Determines the physical order of data in the table. Only one clustered index per table.
+  - **Non-Clustered Index**: Creates a separate structure for quick lookups. Multiple non-clustered indexes can exist per table.
+  - **Covering Index**: An index that includes all columns needed for a query, avoiding the need to access the table.
+  
+- **Factors to Consider**:
+  - **Selectivity**: High selectivity (many unique values) leads to more efficient indexes.
+  - **Column Order**: For composite indexes, place the most selective columns first.
+  - **Read vs. Write Trade-off**: Indexes speed up reads but slow down writes.
+  - **Index Maintenance**: Regular updates and inserts require index re-balancing.
+
+ **What are some pitfalls of using the `NOT IN` clause in subqueries, and how can you replace it with `NOT EXISTS` for better performance?**
+- **Problem with `NOT IN`**:
+  - `NOT IN` does not handle `NULL` values correctly. If the subquery contains even a single `NULL`, the entire `NOT IN` condition will return `false`.
+  
+- **Solution: Use `NOT EXISTS`**:
+  - `NOT EXISTS` works better because it checks for the absence of rows without being affected by `NULL` values.
+
+#### Example:
+```sql
+-- Using NOT IN (may cause issues if `ID` contains NULLs)
+SELECT * FROM Employee WHERE ID NOT IN (SELECT ManagerID FROM Employee);
+
+-- Replace with NOT EXISTS
+SELECT * FROM Employee e WHERE NOT EXISTS (
+    SELECT 1 FROM Employee m WHERE m.ManagerID = e.ID
+);
+```
+
+**How would you design a database schema for handling hierarchical data (e.g., organizational charts)?**
+- **Two Common Models**:
+  1. **Adjacency List Model**: Each node has a `parent_id` field pointing to its parent.
+  
+     ```sql
+     CREATE TABLE Employee (
+         ID INT PRIMARY KEY,
+         Name VARCHAR(100),
+         ParentID INT,  -- References the manager or parent employee
+         FOREIGN KEY (ParentID) REFERENCES Employee(ID)
+     );
+     ```
+  
+  2. **Nested Set Model**: Each node has `left` and `right` values defining its hierarchy.
+
+     ```sql
+     CREATE TABLE Employee (
+         ID INT PRIMARY KEY,
+         Name VARCHAR(100),
+         Left INT,
+         Right INT
+     );
+     ```
+  
+- **Query Example with Recursive CTE**:
    ```sql
-   DELETE FROM Employee
-   WHERE ID NOT IN (
-       SELECT MIN(ID)
+   WITH RECURSIVE Subordinates AS (
+       SELECT ID, Name, ParentID
        FROM Employee
-       GROUP BY Name, Department, Age
-   );
+       WHERE ParentID IS NULL
+       UNION ALL
+       SELECT e.ID, e.Name, e.ParentID
+       FROM Employee e
+       INNER JOIN Subordinates s ON e.ParentID = s.ID
+   )
+   SELECT * FROM Subordinates;
    ```
 
-9. **Explain indexing in detail. What factors should be considered when creating indexes?**
-   - Discuss composite indexes, covering indexes, and how index selectivity impacts query performance.
+**What are `triggers` in SQL, and how would you use them to automatically update a log table whenever a record is inserted into a specific table?**
+- **Trigger**: A database trigger is a special stored procedure that is automatically executed in response to certain events on a particular table (e.g., `INSERT`, `UPDATE`, `DELETE`).
 
-10. **What are some pitfalls of using the `NOT IN` clause in subqueries, and how can you replace it with `NOT EXISTS` for better performance?**
-    - Explain how `NOT IN` can lead to unexpected results with `NULL` values and compare it with `NOT EXISTS`.
+#### Example of a Trigger:
+```sql
+CREATE TRIGGER LogInsertion
+AFTER INSERT ON Employee
+FOR EACH ROW
+BEGIN
+    INSERT INTO EmployeeLog (ID, Action, Timestamp)
+    VALUES (NEW.ID, 'INSERTED', NOW());
+END;
+```
 
-11. **How would you design a database schema for handling hierarchical data (e.g., organizational charts)?**
-    - Discuss `Adjacency List Model` and `Nested Set Model`. Provide SQL examples for recursive queries.
+- **Explanation**:
+  - `AFTER INSERT ON Employee`: Trigger activates after a new row is inserted into the `Employee` table.
+  - `FOR EACH ROW`: Executes for each inserted row.
+  - `NEW.ID`: Refers to the new row being inserted.
 
-12. **What are `triggers` in SQL, and how would you use them to automatically update a log table whenever a record is inserted into a specific table?**
-    - Show how to create a `BEFORE INSERT` or `AFTER INSERT` trigger to capture changes.
+**How would you pivot a table in SQL to convert rows into columns?**
+- Use the `PIVOT` clause (for databases like SQL Server) or `CASE` statements (for most SQL dialects).
 
-    ```sql
-    CREATE TRIGGER LogInsertion
-    AFTER INSERT ON Employee
-    FOR EACH ROW
-    BEGIN
-        INSERT INTO EmployeeLog (ID, Action, Timestamp)
-        VALUES (NEW.ID, 'INSERTED', NOW());
-    END;
-    ```
+#### Example Using `CASE`:
+```sql
+SELECT Department,
+       SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS MaleCount,
+       SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS FemaleCount
+FROM Employee
+GROUP BY Department;
+```
 
-13. **How would you pivot a table in SQL to convert rows into columns?**
-    - Use `CASE` statements or the `PIVOT` function (in SQL Server) to transform rows into columns.
+**What is sharding, and how does it differ from partitioning? When would you use each technique?**
+- **Sharding**: Splits data across multiple databases (horizontal scaling). Typically used for large-scale applications.
+- **Partitioning**: Splits data within a single database (horizontal partitioning). Used to improve query performance by dividing tables into smaller pieces.
 
-    ```sql
-    SELECT Department,
-           SUM(CASE WHEN Gender = 'Male' THEN 1 ELSE 0 END) AS MaleCount,
-           SUM(CASE WHEN Gender = 'Female' THEN 1 ELSE 0 END) AS FemaleCount
+**Write a query to find gaps in a sequence of numbers in a table.**
+- Use `LEAD()` or `LAG()` window functions to detect gaps.
+
+```sql
+SELECT ID + 1 AS MissingID
+FROM Employee e
+WHERE NOT EXISTS (
+    SELECT 1 FROM Employee WHERE ID = e.ID + 1
+);
+```
+
+**Difference Between OLTP and OLAP**
+- **OLTP (Online Transaction Processing)**:
+  - Used for transactional systems.
+  - Schema is normalized for write efficiency.
+  
+- **OLAP (Online Analytical Processing)**:
+  - Used for analytical systems (data warehouses).
+  - Schema is denormalized for read efficiency.
+
+**Create a Recursive CTE for Traversing a Hierarchy**
+Use the `WITH RECURSIVE` clause:
+
+```sql
+WITH RECURSIVE Subordinates AS (
+    SELECT EmployeeID, ManagerID, Name
     FROM Employee
-    GROUP BY Department;
-    ```
+    WHERE ManagerID IS NULL
+    UNION ALL
+    SELECT e.EmployeeID, e.ManagerID, e.Name
+    FROM Employee e
+    INNER JOIN Subordinates s ON e.ManagerID = s.EmployeeID
+)
+SELECT * FROM Subordinates;
+```
 
-14. **What is sharding, and how does it differ from partitioning? When would you use each technique?**
-    - Discuss horizontal and vertical sharding for large-scale databases and when to apply partitioning within a single database to optimize query performance.
+**ACID Properties in SQL**
+1. **Atomicity**: Ensures all parts of a transaction are completed successfully.
+2. **Consistency**: Maintains database integrity before and after a transaction.
+3. **Isolation**: Transactions do not interfere with each other.
+4. **Durability**: Once committed, changes are permanent.
 
-15. **Write a query to find gaps in a sequence of numbers in a table.**
-    - Use `LEAD()` or `LAG()` window functions.
+**How would you perform a cross-database query, and what are the challenges involved?**
 
-    ```sql
-    SELECT ID + 1 AS MissingID
-    FROM Employee
-    WHERE NOT EXISTS (
-        SELECT 1 FROM Employee E WHERE E.ID = Employee.ID + 1
-    );
-    ```
+- **Syntax**: Use fully qualified table names (`db1.schema1.Table`).
+- **Example**:
+  ```sql
+  SELECT db1.dbo.TableA.col, db2.dbo.TableB.col
+  FROM db1.dbo.TableA
+  INNER JOIN db2.dbo.TableB ON db1.dbo.TableA.ID = db2.dbo.TableB.ID;
+  ```
 
-16. **Explain the difference between OLTP (Online Transaction Processing) and OLAP (Online Analytical Processing). How does the database design differ?**
-    - Discuss normalization in OLTP for write efficiency and denormalization in OLAP for read efficiency.
+- **Challenges**:
+  1. **Permissions**: Ensure appropriate access across databases.
+  2. **Performance**: Cross-database joins can cause latency.
+  3. **Schema Inconsistencies**: Handle mismatched data types.
+  4. **Transaction Management**: Distributed transactions are complex.
+  5. **Syntax Variations**: SQL syntax may differ across platforms.
 
-17. **How would you create a recursive CTE to traverse a hierarchical structure, like finding all subordinates of a manager?**
-    - Use the `WITH RECURSIVE` clause.
+**How would you handle schema changes in a production environment without downtime?**
 
-    ```sql
-    WITH RECURSIVE Subordinates AS (
-        SELECT EmployeeID, ManagerID, Name
-        FROM Employee
-        WHERE ManagerID IS NULL
-        UNION ALL
-        SELECT E.EmployeeID, E.ManagerID, E.Name
-        FROM Employee E
-        INNER JOIN Subordinates S ON E.ManagerID = S.EmployeeID
-    )
-    SELECT * FROM Subordinates;
-    ```
+- **Use Strategies**:
+  1. **Backward-Compatible Changes**: Add new columns as `NULL` or `DEFAULT`.
+  2. **Online Schema Change Tools**: Use `gh-ost`, `pt-online-schema-change`, or `pg_repack`.
+  3. **Rolling Schema Updates**: Update schema in phases—Add, Migrate, Update Code, Remove.
+  4. **Double-Writing**: Temporarily write to both old and new schema until stable.
+  5. **Feature Flags**: Control new schema usage via flags.
+  
+- **Example**: For adding a new column:
+  1. **Phase 1**: `ALTER TABLE Employee ADD COLUMN Department VARCHAR(100) NULL;`
+  2. **Phase 2**: Migrate data and update app to use new column.
+  3. **Phase 3**: Remove old column after verification.
 
-18. **What are ACID properties, and how do they impact database transactions?**
-    - Describe `Atomicity`, `Consistency`, `Isolation`, and `Durability` in the context of transaction management.
 
-19. **How would you perform a cross-database query, and what are the challenges involved?**
-    - Discuss syntax variations across database platforms and potential issues like permissions and schema differences.
-
-20. **How would you handle schema changes in a production environment without downtime?**
-    - Strategies: zero-downtime deployment, online schema change tools, and backward-compatible changes.

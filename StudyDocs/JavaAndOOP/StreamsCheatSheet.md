@@ -1,12 +1,11 @@
-Here's a comprehensive cheatsheet that covers various modifications you can perform on an `ArrayList` using Java's Stream API. This list includes examples of common operations like filtering, transforming, sorting, and more.
 
-### **1. Initialize an ArrayList Using Streams**
+### **Initialize an ArrayList Using Streams**
 ```java
 List<Integer> numbers = IntStream.range(1, 11).boxed().collect(Collectors.toList());
 // Creates a list with values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
-### **2. Filtering an ArrayList**
+### **Filtering an ArrayList**
 - **Filter Even Numbers**:
 ```java
 List<Integer> evenNumbers = numbers.stream()
@@ -24,7 +23,7 @@ List<String> longWords = words.stream()
 // Output: [Java, Stream, Example]
 ```
 
-### **3. Transforming Elements (Mapping)**
+### **Transforming Elements (Mapping)**
 - **Convert a List of Integers to Their Squares**:
 ```java
 List<Integer> squares = numbers.stream()
@@ -41,13 +40,20 @@ List<String> upperCaseWords = words.stream()
 // Output: [JAVA, STREAM, API, EXAMPLE]
 ```
 
-### **4. Sorting an ArrayList**
+### **Sorting an ArrayList**
 - **Sort Numbers in Ascending Order**:
 ```java
 List<Integer> sortedNumbers = numbers.stream()
                                      .sorted()
                                      .collect(Collectors.toList());
 // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+- **Sort Numbers in Descending Order**:
+```java
+List<Integer> sortedNumbers = numbers.stream()
+                                     .sorted(Collections.reverseOrder())
+                                     .collect(Collectors.toList());
+// Output: [10,9,8,....]
 ```
 
 - **Sort Strings Alphabetically**:
@@ -58,6 +64,14 @@ List<String> sortedWords = words.stream()
 // Output: [API, Example, Java, Stream]
 ```
 
+- **Sort Strings Alphabetically Reversed**:
+```java
+List<String> sortedWords = words.stream()
+                                .sorted(Collections.reverseOrder())
+                                .collect(Collectors.toList());
+// Output: [Stream, API]
+```
+
 - **Sort Strings by Length**:
 ```java
 List<String> sortedByLength = words.stream()
@@ -66,7 +80,28 @@ List<String> sortedByLength = words.stream()
 // Output: [API, Java, Stream, Example]
 ```
 
-### **5. Reducing a List to a Single Value**
+- **Sorting Custom Object**
+```java
+public class User {
+    
+    private String name;
+    private int age;
+
+    // Constructor, getters, setters and toString()
+}
+// Natural Order
+List<User> sortedList = userList.stream()
+        .sorted(Comparator.comparingInt(User::getAge))
+        .collect(Collectors.toList());
+
+// Reverse Order
+List<User> sortedList = userList.stream()
+        .sorted(Comparator.comparingInt(User::getAge).reversed())
+        .collect(Collectors.toList());
+```
+
+
+### **Reducing a List to a Single Value**
 - **Find the Sum of All Elements**:
 ```java
 int sum = numbers.stream()
@@ -81,7 +116,7 @@ String concatenated = words.stream()
 // Output: "JavaStreamAPIExample"
 ```
 
-### **6. Collecting into a Different Collection Type**
+### **Collecting into a Different Collection Type**
 - **Convert List to Set**:
 ```java
 Set<Integer> numberSet = numbers.stream()
@@ -96,7 +131,7 @@ Map<String, Integer> wordLengthMap = words.stream()
 // Output: {Java=4, Stream=6, API=3, Example=7}
 ```
 
-### **7. Removing Duplicates**
+### **Removing Duplicates**
 ```java
 List<Integer> withDuplicates = Arrays.asList(1, 2, 3, 3, 4, 5, 5, 6);
 List<Integer> withoutDuplicates = withDuplicates.stream()
@@ -105,7 +140,7 @@ List<Integer> withoutDuplicates = withDuplicates.stream()
 // Output: [1, 2, 3, 4, 5, 6]
 ```
 
-### **8. Skipping and Limiting Results**
+### **Skipping and Limiting Results**
 - **Skip First 3 Elements**:
 ```java
 List<Integer> skipped = numbers.stream()
@@ -122,15 +157,34 @@ List<Integer> limited = numbers.stream()
 // Output: [1, 2, 3, 4, 5]
 ```
 
-### **9. Grouping Elements**
+### **Grouping Elements**
 - **Group Words by Their Length**:
 ```java
 Map<Integer, List<String>> groupedByLength = words.stream()
                                                   .collect(Collectors.groupingBy(String::length));
 // Output: {3=[API], 4=[Java], 6=[Stream], 7=[Example]}
 ```
+- **Group words based on occurenaces(count)**
+```java
+Map<String, Long> result = words.stream()
+  .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+//or Function.identity() can be replaced by using he following lambda e -> e
+// Map<String, Long> result = list.stream()
+//   .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+//words = ("Foo", "Bar", "Bar", "Bar", "Foo")
+//Output: {"Foo":2, "Bar":3}
+```
 
-### **10. Joining Elements as a String**
+### **Partition Elements**
+- **Partition By Value**
+```java
+Map<Boolean, List<Integer> > 
+            map = s.collect( 
+                Collectors.partitioningBy(num -> num > 3)); 
+// Output : {false=[1, 2, 3], true=[4, 5, 6, 7, 8, 9, 10]}
+```
+
+### **Joining Elements as a String**
 - **Join All Words into a Single String**:
 ```java
 String joined = words.stream()
@@ -138,7 +192,7 @@ String joined = words.stream()
 // Output: "Java, Stream, API, Example"
 ```
 
-### **11. Parallel Stream for Faster Processing**
+### **Parallel Stream for Faster Processing**
 ```java
 List<Integer> squaresParallel = numbers.parallelStream()
                                        .map(n -> n * n)
@@ -146,7 +200,7 @@ List<Integer> squaresParallel = numbers.parallelStream()
 // Output: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100] (Order may vary)
 ```
 
-### **12. Peek for Debugging During Stream Operations**
+### **Peek for Debugging During Stream Operations**
 `peek` is useful for debugging intermediate stream operations.
 ```java
 List<Integer> result = numbers.stream()
@@ -162,7 +216,7 @@ List<Integer> result = numbers.stream()
 // ...
 ```
 
-### **13. Flattening Nested Collections**
+### **Flattening Nested Collections**
 If you have a list of lists, you can **flatten** it into a single list.
 
 ```java
@@ -178,7 +232,7 @@ List<Integer> flatList = listOfLists.stream()
 // Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### **14. Counting Elements**
+### **Counting Elements**
 - **Count Elements Greater Than 5**:
 ```java
 long count = numbers.stream()
@@ -187,7 +241,7 @@ long count = numbers.stream()
 // Output: 5
 ```
 
-### **15. Finding Minimum and Maximum Values**
+### **Finding Minimum and Maximum Values**
 - **Find Maximum Value**:
 ```java
 int max = numbers.stream()
@@ -204,7 +258,7 @@ int min = numbers.stream()
 // Output: 1
 ```
 
-### **16. All Match, Any Match, None Match**
+### **All Match, Any Match, None Match**
 - **Check if All Elements Are Positive**:
 ```java
 boolean allPositive = numbers.stream()
@@ -226,14 +280,14 @@ boolean noneNegative = numbers.stream()
 // Output: true
 ```
 
-### **17. Using `forEach` for Simple Iteration**
+### **Using `forEach` for Simple Iteration**
 ```java
 numbers.stream()
        .forEach(n -> System.out.println("Number: " + n));
 // Output: Number: 1, Number: 2, ..., Number: 10
 ```
 
-### **18. Using `Map` to Modify Object Properties**
+### **Using `Map` to Modify Object Properties**
 For a list of custom objects, you can modify a field using `map`.
 
 ```java
@@ -260,4 +314,54 @@ List<Person> updatedAges = people.stream()
                                  .map(person -> new Person(person.name, person.age + 1))
                                  .collect(Collectors.toList());
 // Output: [Alice - 26, Bob - 31, Charlie - 36]
+```
+
+
+The following will generate Optional, 
+
+- `findFirst()` return type `Optional<T>`
+- `findAny()` return type `Optionla<T>`
+- `max(Comparator <? super T> comparator)` return type `Optional<T>`
+- `min(Comparator <? super T> comparator)` return type `Optional<T>`
+- `reduce(BinaryOperator<T> accumulator)` return type `Optional<T>`
+
+*Disclaimer:* Not all reduce return Optional Type
+Reduce
+- `Optional<Integer> sum = Stream.of(1, 2, 3).reduce((a, b) -> a + b);`
+- `Integer sum = Stream.of(1, 2, 3).reduce(0, (a, b) -> a + b);  // Returns 6`
+
+
+
+**When to Use collectingAndThen()**
+Use collectingAndThen() when you want to perform a transformation on the collected result or convert it to a different type. It allows you to:
+
+- Wrap results into immutable collections.
+- Transform the final result of a collector into a different format.
+- Apply custom operations like getting the size, converting to a different data type, or transforming the collected result.
+
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
+
+// Collecting into an unmodifiable (immutable) list
+List<String> immutableList = names.stream()
+        .filter(name -> name.length() > 3)
+        .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+
+System.out.println(immutableList);  // Output: [Alice, Charlie]
+immutableList.add("David");         // Throws UnsupportedOperationException
+List<String> items = Arrays.asList("apple", "banana", "orange", "apple");
+
+// Collect into a Set and then get the size of the Set
+int uniqueItemCount = items.stream()
+        .collect(Collectors.collectingAndThen(Collectors.toSet(), Set::size));
+
+System.out.println(uniqueItemCount);  // Output: 3
+List<String> fruits = Arrays.asList("apple", "banana", "orange");
+
+// Collecting elements into a comma-separated string
+String result = fruits.stream()
+        .collect(Collectors.collectingAndThen(Collectors.toList(), list -> String.join(", ", list)));
+
+System.out.println(result);  // Output: apple, banana, orange
+
 ```
