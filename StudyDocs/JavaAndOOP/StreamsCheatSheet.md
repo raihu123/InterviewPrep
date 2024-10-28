@@ -365,3 +365,15 @@ String result = fruits.stream()
 System.out.println(result);  // Output: apple, banana, orange
 
 ```
+
+
+**Get me the 5th largest value**
+
+```java
+Optional<Integer> fifthLargest = numbers.stream()
+        .sorted((a, b) -> b - a) // Sort in descending order
+        .skip(4)                 // Skip the first 4 elements
+        .findFirst();            // Get the 5th largest
+
+fifthLargest.ifPresent(value -> System.out.println("The 5th largest value is: " + value));
+```
