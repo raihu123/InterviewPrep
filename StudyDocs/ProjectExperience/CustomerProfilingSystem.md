@@ -234,3 +234,86 @@ By addressing the data inconsistency issue step by step, we improved the reliabi
   - Regular data reconciliation helps in maintaining data integrity over time.
 
 By proactively addressing these challenges, we ensured that our microservices-based application provided a reliable and consistent customer profiling experience, even in the face of complex distributed transactions.
+
+
+
+
+### Data Conflict issue:
+
+This scenario is a classic **concurrent update problem**, where two requests try to update the same row simultaneously, potentially leading to **data inconsistency**. To resolve this issue, you can use one of the following strategies:
+
+---
+
+### **1. Database-Level Handling**
+The database can enforce constraints to handle concurrent updates safely.
+
+#### **a. Optimistic Locking**
+- Use a **version field** in the database row.
+- Each update request includes the current version of the row it is updating.
+- When the database processes the update:
+  - If the version in the database matches the one sent by the request, it updates the row and increments the version.
+  - If the versions do not match, the database rejects the update, signaling that another update has occurred.
+  
+**Implementation Example:**
+- Add a `version` column to your table.
+- Use JPA's `@Version` annotation or manage the version field manually.
+
+```java
+@Version
+private int version;
+```
+
+- If a conflict occurs, the application can retry the update or notify the user.
+
+#### **b. Pessimistic Locking**
+- The row is locked during the transaction, preventing other transactions from modifying it.
+- Example SQL Query:
+  ```sql
+  SELECT * FROM table_name WHERE id = ? FOR UPDATE;
+  ```
+- This ensures only one instance can modify the row at a time.
+
+**Caveat:** Pessimistic locking can lead to performance issues in high-traffic systems due to blocking.
+
+---
+
+### **2. Application-Level Handling**
+Use distributed locks or consistency strategies at the application level.
+
+#### **a. Distributed Locking**
+- Use a distributed lock (e.g., with Redis, Zookeeper, or database-based locks) to synchronize updates across multiple instances.
+- Example with Redis:
+  ```java
+  boolean isLocked = redisTemplate.opsForValue().setIfAbsent("row_lock_key", "locked", Duration.ofSeconds(10));
+  if (isLocked) {
+      try {
+          // Perform update logic
+      } finally {
+          redisTemplate.delete("row_lock_key");
+      }
+  } else {
+      // Handle lock acquisition failure (e.g., retry or reject the request)
+  }
+  ```
+
+#### **b. Eventual Consistency**
+- Instead of direct updates, queue both update requests to a centralized service or message broker (e.g., Kafka or RabbitMQ).
+- Process updates sequentially to ensure consistency.
+
+---
+
+### **3. Conflict Resolution Strategies**
+If conflicting updates occur, you can resolve them based on specific business rules.
+
+- **Last-Write-Wins**: Accept the most recent update.
+- **Merge Changes**: Combine updates if possible (e.g., for additive or cumulative changes).
+- **Reject Conflicting Update**: Notify the user about the conflict and allow them to retry.
+
+---
+
+### **Best Practice**
+1. **Optimistic Locking** is preferred for most scenarios, as it reduces contention and works well when conflicts are rare.
+2. Use **Distributed Locking** if you have complex application logic requiring coordination across instances.
+3. Test and tune your locking mechanism to balance performance and consistency.
+
+Let me know if you'd like specific examples or guidance for your system's needs!
