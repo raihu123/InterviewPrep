@@ -165,3 +165,96 @@ To manage changes over time without breaking existing clients.
 ### How Do You Implement Versioning for RESTful Web Services?
 Choose a strategy (e.g., URI, Header) and configure your controllers accordingly.
 **Easy to Remember**: Pick a **versioning** method and implement.
+
+
+### **JWT vs OAuth: Which is Used for Authorization?**
+
+#### **1. JWT (JSON Web Token):**
+- **JWT** is a token format. It is **not a protocol** but is widely used in **authorization** systems.
+- A JWT contains encoded JSON data, which can include:
+  - Claims about the user (e.g., roles, permissions).
+  - Information about the issuer and the expiration time.
+
+---
+
+#### **How JWT is Used for Authorization:**
+1. **Authentication Phase**:
+   - A user logs in and provides valid credentials.
+   - The server generates a JWT containing user-specific claims (e.g., roles, user ID).
+   - The client receives and stores this token (e.g., in local storage or cookies).
+
+2. **Authorization Phase**:
+   - The client sends the JWT with every subsequent request (usually in the `Authorization` header as `Bearer <token>`).
+   - The server verifies the JWT:
+     - Validates the signature.
+     - Decodes the token to check claims.
+     - If the user has the required claims (e.g., roles/permissions), the server authorizes access to the resource.
+
+---
+
+#### **2. OAuth:**
+- **OAuth** is an authorization framework (protocol) that allows applications to delegate user authorization to a third-party service (e.g., Google, Facebook).
+- OAuth provides access tokens to allow secure access to protected resources without exposing the user's credentials.
+
+---
+
+#### **How OAuth is Used for Authorization:**
+1. **Resource Owner Authorization**:
+   - A user (resource owner) logs in to a third-party service (e.g., Google).
+   - The service prompts the user to approve the application's access to certain resources (e.g., email, profile).
+
+2. **Access Token Generation**:
+   - Upon approval, the OAuth server generates an **access token** and sends it back to the application.
+   - This token usually has an expiration time and limited scope (permissions).
+
+3. **Resource Access**:
+   - The application uses the access token to call APIs on behalf of the user.
+   - The resource server verifies the token and grants or denies access based on the token's scope.
+
+---
+
+### **Key Differences**
+| Feature               | JWT                              | OAuth                                 |
+|-----------------------|----------------------------------|---------------------------------------|
+| **Purpose**           | Token format for authorization  | Authorization framework              |
+| **Scope**             | Used for both authentication and authorization | Focused on authorization             |
+| **Usage**             | Stateless, self-contained token | Delegates authorization to a provider|
+| **Token Type**        | Encoded JSON token               | Usually access tokens, often opaque  |
+| **Authentication**    | Not directly handled            | Often paired with OpenID Connect for authentication |
+| **Authorization**     | Claims in the JWT determine access | Access tokens with limited scopes define access |
+
+---
+
+### **High-Level Workflow Comparison**
+
+#### **JWT-Based Authorization**
+1. User logs in → Server generates a JWT.
+2. JWT is sent with each request → Server verifies and authorizes based on token claims.
+3. JWT is stateless → No need to store session data on the server.
+
+#### **OAuth-Based Authorization**
+1. Application redirects user to an OAuth provider for login.
+2. User approves access → OAuth provider issues an **access token**.
+3. Application uses the access token to access the user's resources on behalf of the user.
+
+---
+
+### **When to Use What**
+- **Use JWT**:
+  - When you want a simple, stateless system for both authentication and authorization.
+  - For microservices where tokens need to pass claims directly.
+  - If you're building a custom authentication system.
+
+- **Use OAuth**:
+  - When you need delegated authorization (e.g., "Login with Google").
+  - When accessing third-party APIs securely.
+  - For applications requiring complex scopes and granular resource permissions.
+
+---
+
+### **Common Integration**
+Often, OAuth issues access tokens as JWTs. In such cases:
+- **OAuth manages authorization**, including token issuance and scopes.
+- **JWT provides the token format**, making it easy to decode and validate token claims.
+
+Let me know if you’d like more in-depth examples or clarification!

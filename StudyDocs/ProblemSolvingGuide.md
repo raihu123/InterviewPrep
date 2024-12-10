@@ -1,3 +1,48 @@
+1. [**Binary Search**](#binary-search)
+2. [**Prefix Sum**](#prefix-sum)
+3. [**Two Pointers**](#two-pointers)
+4. [**Sliding Window**](#sliding-window)
+5. [**Fast & Slow Pointers**](#fast--slow-pointers)
+6. [**Heap**](#heap)
+7. [**Monotonic Stack**](#monotonic-stack)
+8. [**Overlapping Intervals**](#overlapping-intervals)
+9. [**Backtracking**](#backtracking)
+10. [**Dynamic Programming**](#dynamic-programming-patterns)
+11. [**Depth-First Search (DFS)**](#depth-first-search-dfs)
+12. [**Breadth-First Search (BFS)**](#breadth-first-search-bfs)
+13. [**Cyclic Sort**](#cyclic-sort)
+
+
+
+## **Binary Search**
+
+### Formula:
+- Search for a target value in a sorted array by dividing the search space in half.
+
+### Java Code:
+```java
+class BinarySearch {
+    public int search(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return -1;
+    }
+}
+```
+---
+
 ## Prefix Sum
 
 Prefix Sum involves preprocessing an array to create a new array where each element at index `i` represents the sum of the array from the start up to `i`. This allows for efficient sum queries on subarrays.
@@ -51,6 +96,8 @@ class PrefixSum {
 1. [Range Sum Query - Immutable (LeetCode #303)](https://leetcode.com/problems/range-sum-query-immutable)
 2. [Contiguous Array (LeetCode #525)](https://leetcode.com/problems/contiguous-array)
 3. [Subarray Sum Equals K (LeetCode #560)](https://leetcode.com/problems/subarray-sum-equals-k)
+
+
 
 ---
 
@@ -229,104 +276,69 @@ class FastSlowPointers {
 
 ---
 
-## LinkedList In-place Reversal
 
-The In-place Reversal of a LinkedList pattern reverses parts of a linked list without using extra space.
+## **Heap**
 
-Use this pattern when you need to reverse sections of a linked list.
+A **heap** is a specialized binary tree-based data structure used to efficiently retrieve the smallest or largest element. There are two types:
+- **Min-Heap**: The smallest element is at the root.
+- **Max-Heap**: The largest element is at the root.
 
-**Clues**:
-   - The problem asks for in-place modifications on a linked list (without using extra memory).
-   - The task involves reversing a section of the linked list.
-   - The problem involves processing nodes in a reversed order.
+Use this pattern for problems requiring repeated access to the smallest/largest elements, such as priority queues or top-K problems.
 
-   **Common problems**: Reversing a linked list, reversing sub-lists, rearranging nodes.
+---
 
-### Sample Problem:
-Reverse a sublist of a linked list from position `m` to `n`.
+### **Clues**
+- You're asked for the smallest or largest `K` elements in a dataset.
+- You need to manage dynamic priorities or efficiently access the highest/lowest priority element.
+- Problems related to priority queues, scheduling tasks, or merging sorted lists.
 
-**Example**:
-- Input: `head = [1, 2, 3, 4, 5], m = 2, n = 4`
-- Output: `[1, 4, 3, 2, 5]`
+**Common problems**: Kth largest/smallest elements, median of a stream, merging k sorted lists.
 
-**Explanation**:
-1. Identify the start and end of the sublist.
-2. Reverse the nodes in place by adjusting the pointers.
+---
 
+### **Sample Problem**
+Find the **Kth largest element** in an array.
 
-### Formula:
-- Reverse the linked list or a part of it by adjusting the pointers.
+**Example:**
+- **Input:** `nums = [3, 2, 1, 5, 6, 4], k = 2`
+- **Output:** `5`
+  
+**Explanation:**
+1. Use a **min-heap** of size `K` to keep track of the top `K` largest elements.
+2. Iterate through the array, adding elements to the heap.
+3. If the heap exceeds size `K`, remove the smallest element (`heap.poll()`).
+4. The root of the heap (`heap.peek()`) will be the `Kth` largest element.
 
-### Java Code:
+---
+
+### **Java Code**
 ```java
-class LinkedListReversal {
-    public ListNode reverseBetween(ListNode head, int m, int n) {
-        if (head == null) return null;
+import java.util.PriorityQueue;
 
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode pre = dummy;
-
-        for (int i = 0; i < m - 1; i++) {
-            pre = pre.next;
+class KthLargest {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+        for (int num : nums) {
+            minHeap.add(num); // Add current number to heap
+            if (minHeap.size() > k) {
+                minHeap.poll(); // Remove the smallest element if heap size exceeds k
+            }
         }
-
-        ListNode start = pre.next;
-        ListNode then = start.next;
-
-        for (int i = 0; i < n - m; i++) {
-            start.next = then.next;
-            then.next = pre.next;
-            pre.next = then;
-            then = start.next;
-        }
-
-        return dummy.next;
+        
+        return minHeap.peek(); // The root of the heap is the kth largest element
     }
 }
 ```
 
-### LeetCode Problems:
-1. [Reverse Linked List (LeetCode #206)](https://leetcode.com/problems/reverse-linked-list)
-2. [Reverse Linked List II (LeetCode #92)](https://leetcode.com/problems/reverse-linked-list-ii)
-3. [Swap Nodes in Pairs (LeetCode #24)](https://leetcode.com/problems/swap-nodes-in-pairs)
-...
-
-## Monotonic Stack
-
-The Monotonic Stack pattern uses a stack to maintain a sequence of elements in a specific order (increasing or decreasing).
-
-Use this pattern for problems that require finding the next greater or smaller element.
-
-**Clues**:
-   - The problem involves finding the next greater/smaller element in an array.
-   - You're asked to maintain some order while processing elements.
-   - Problems involving intervals, temperature, stock prices where you need to maintain a decreasing or increasing sequence.
-
-   **Common problems**: Next greater element, stock span problems, trapping rainwater.
-
-### Sample Problem:
-Find the next greater element for each element in an array. Output -1 if the greater element doesn’t exist.
-
-**Example:**
-
-- **Input:** nums = [2, 1, 2, 4, 3]  
-- **Output:** [4, 2, 4, -1, -1]
-
-**Explanation:**
-- Use a stack to keep track of elements for which we haven't found the next greater element yet.
-- Iterate through the array, and for each element, pop elements from the stack until you find a greater element.
-- If the stack is not empty, set the result for index at the top of the stack to the current element.
-- Push the current element onto the stack.
-
-### LeetCode Problems:
-- [Next Greater Element I (LeetCode #496)](https://leetcode.com/problems/next-greater-element-i)
-- [Daily Temperatures (LeetCode #739)](https://leetcode.com/problems/daily-temperatures)
-- [Largest Rectangle in Histogram (LeetCode #84)](https://leetcode.com/problems/largest-rectangle-in-histogram)
-
 ---
 
-## Top ‘K’ Elements
+### **LeetCode Problems**
+1. [Kth Largest Element in an Array (LeetCode #215)](https://leetcode.com/problems/kth-largest-element-in-an-array)
+2. [Top K Frequent Elements (LeetCode #347)](https://leetcode.com/problems/top-k-frequent-elements)
+3. [Merge k Sorted Lists (LeetCode #23)](https://leetcode.com/problems/merge-k-sorted-lists)
+
+### Top ‘K’ Elements
 
 The Top 'K' Elements pattern finds the top k largest or smallest elements in an array or stream of data using heaps or sorting.
 
@@ -384,11 +396,48 @@ class TopKElements {
 }
 ```
 
-
 ### LeetCode Problems:
 - [Kth Largest Element in an Array (LeetCode #215)](https://leetcode.com/problems/kth-largest-element-in-an-array)
 - [Top K Frequent Elements (LeetCode #347)](https://leetcode.com/problems/top-k-frequent-elements)
 - [Find K Pairs with Smallest Sums (LeetCode #373)](https://leetcode.com/problems/find-k-pairs-with-smallest-sums)
+
+
+---
+
+### **Formula**
+- Use a **min-heap** for the smallest `K` elements or a **max-heap** for the largest `K` elements.
+
+## Monotonic Stack
+
+The Monotonic Stack pattern uses a stack to maintain a sequence of elements in a specific order (increasing or decreasing).
+
+Use this pattern for problems that require finding the next greater or smaller element.
+
+**Clues**:
+   - The problem involves finding the next greater/smaller element in an array.
+   - You're asked to maintain some order while processing elements.
+   - Problems involving intervals, temperature, stock prices where you need to maintain a decreasing or increasing sequence.
+
+   **Common problems**: Next greater element, stock span problems, trapping rainwater.
+
+### Sample Problem:
+Find the next greater element for each element in an array. Output -1 if the greater element doesn’t exist.
+
+**Example:**
+
+- **Input:** nums = [2, 1, 2, 4, 3]  
+- **Output:** [4, 2, 4, -1, -1]
+
+**Explanation:**
+- Use a stack to keep track of elements for which we haven't found the next greater element yet.
+- Iterate through the array, and for each element, pop elements from the stack until you find a greater element.
+- If the stack is not empty, set the result for index at the top of the stack to the current element.
+- Push the current element onto the stack.
+
+### LeetCode Problems:
+- [Next Greater Element I (LeetCode #496)](https://leetcode.com/problems/next-greater-element-i)
+- [Daily Temperatures (LeetCode #739)](https://leetcode.com/problems/daily-temperatures)
+- [Largest Rectangle in Histogram (LeetCode #84)](https://leetcode.com/problems/largest-rectangle-in-histogram)
 
 ---
 
@@ -464,36 +513,162 @@ class MergeIntervals {
 
 ---
 
-## Modified Binary Search
 
-The Modified Binary Search pattern adapts binary search to solve a wider range of problems, such as finding elements in rotated sorted arrays.
+##  **Cyclic Sort**
 
-Use this pattern for problems involving sorted or rotated arrays where you need to find a specific element.
+### Formula:
+- Place each element in its correct position (1 to n) using index swaps.
+
+### Java Code:
+```java
+class CyclicSort {
+    public void cyclicSort(int[] nums) {
+        int i = 0;
+        while (i < nums.length) {
+            int correctIndex = nums[i] - 1;
+            if (nums[i] != nums[correctIndex]) {
+                swap(nums, i, correctIndex);
+            } else {
+                i++;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+
+---
+
+## Backtracking
+
+Backtracking explores all possible solutions and backtracks when a solution path fails.
+
+Use this pattern when you need to find all (or some) solutions to a problem that satisfies given constraints. For example: combinatorial problems, such as generating permutations, combinations, or subsets.
 
 **Clues**:
-   - The problem asks to search for an element in a sorted or rotated array.
-   - You need to find a minimum/maximum, or perform an efficient search in log(n) time.
-   - The array is sorted but modified in some way (e.g., rotation, peaks and valleys).
-   
-   **Common problems**: Searching in rotated sorted arrays, finding the peak element, binary search variations.
+   - The problem asks for all possible combinations, permutations, or subsets.
+   - You need to find solutions for a decision-making problem (e.g., placing queens, generating subsets, or solving mazes).
+   - You're looking for an optimal solution but also need to explore many possibilities.
+
+   **Common problems**: N-Queens problem, Sudoku solver, generating subsets/permutations, solving a maze.
 
 ### Sample Problem:
-Find an element in a rotated sorted array.
+Generate all permutations of a given list of numbers.
 
 **Example:**
 
-- **Input:** nums = [4, 5, 6, 7, 0, 1, 2], target = 0  
-- **Output:** 4
+- **Input:** nums = [1, 2, 3]  
+- **Output:** [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
 
 **Explanation:**
-- Perform binary search with an additional check to determine which half of the array is sorted.
-- We then check if the target is within the range of the sorted half.
-- If it is, we search that half; otherwise, we search the other half.
+- Use recursion to generate permutations.
+- For each element, include it in the current permutation and recursively generate the remaining permutations.
+- Backtrack when all permutations for a given path are generated.
+
+### Formula:
+- Explore all possible solutions by building them incrementally and backtracking.
+
+### Java Code:
+```java
+import java.util.*;
+
+class Backtracking {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(nums, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    private void backtrack(int[] nums, int index, List<Integer> current, List<List<Integer>> result) {
+        result.add(new ArrayList<>(current));
+        
+        for (int i = index; i < nums.length; i++) {
+            current.add(nums[i]);
+            backtrack(nums, i + 1, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+}
+```
 
 ### LeetCode Problems:
-- [Search in Rotated Sorted Array (LeetCode #33)](https://leetcode.com/problems/search-in-rotated-sorted-array)
-- [Find Minimum in Rotated Sorted Array (LeetCode #153)](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
-- [Search a 2D Matrix II (LeetCode #240)](https://leetcode.com/problems/search-a-2d-matrix-ii)
+- [Permutations (LeetCode #46)](https://leetcode.com/problems/permutations)
+- [Subsets (LeetCode #78)](https://leetcode.com/problems/subsets)
+- [N-Queens (LeetCode #51)](https://leetcode.com/problems/n-queens)
+
+---
+
+## Dynamic Programming Patterns
+
+Dynamic Programming (DP) involves breaking down problems into smaller subproblems and solving them using a bottom-up or top-down approach.
+
+Use this pattern for problems with overlapping subproblems and optimal substructure.
+
+DP itself has multiple sub-patterns. Some of the most important ones are:
+- Fibonacci Numbers
+- 0/1 Knapsack
+- Longest Common Subsequence (LCS)
+- Longest Increasing Subsequence (LIS)
+- Subset Sum
+- Matrix Chain Multiplication
+
+**Clues**:
+   - The problem involves optimization (e.g., maximizing/minimizing a value).
+   - The question asks for solutions to problems involving overlapping subproblems or optimal substructure.
+   - You need to solve the problem in a bottom-up or top-down manner (usually with memoization or tabulation).
+   
+   **Common problems**: Fibonacci sequence, knapsack problem, longest common subsequence, matrix chain multiplication, optimal game strategies.
+
+### Sample Problem:
+Calculate the n-th Fibonacci number.
+
+**Example:**
+
+- **Input:** n = 5  
+- **Output:** 5 (The first five Fibonacci numbers are 0, 1, 1, 2, 3, 5)
+
+**Explanation:**
+- Use a bottom-up approach to calculate the n-th Fibonacci number.
+- Start with the first two numbers (0 and 1) and iterate to calculate the next numbers like (dp[i] = dp[i - 1] + dp[i - 2]).
+
+
+### Formula:
+- Break problems into subproblems, store results to avoid recomputation.
+
+### Java Code:
+```java
+class DynamicProgramming {
+    public int fib(int n) {
+        if (n <= 1) return n;
+        
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        
+        return dp[n];
+    }
+}
+```
+
+### LeetCode Problems:
+- [Climbing Stairs (LeetCode #70)](https://leetcode.com/problems/climbing-stairs)
+- [House Robber (LeetCode #198)](https://leetcode.com/problems/house-robber)
+- [Coin Change (LeetCode #322)](https://leetcode.com/problems/coin-change)
+- [Longest Common Subsequence (LCS) (LeetCode #1143)](https://leetcode.com/problems/longest-common-subsequence)
+- [Longest Increasing Subsequence (LIS) (LeetCode #322)](https://leetcode.com/problems/longest-increasing-subsequence)
+- [Partition Equal Subset Sum (LeetCode #416)](https://leetcode.com/problems/partition-equal-subset-sum)
+
+---
+
 
 
 ## Binary Tree Traversal
@@ -623,193 +798,104 @@ Perform flood fill on a 2D grid. Change all the cells connected to the starting 
 - [Number of Islands (LeetCode #200)](https://leetcode.com/problems/number-of-islands)
 - [Surrounded Regions (LeetCode #130)](https://leetcode.com/problems/surrounded-regions)
 
----
+--- 
 
-## Backtracking
+## LinkedList In-place Reversal
 
-Backtracking explores all possible solutions and backtracks when a solution path fails.
+The In-place Reversal of a LinkedList pattern reverses parts of a linked list without using extra space.
 
-Use this pattern when you need to find all (or some) solutions to a problem that satisfies given constraints. For example: combinatorial problems, such as generating permutations, combinations, or subsets.
+Use this pattern when you need to reverse sections of a linked list.
 
 **Clues**:
-   - The problem asks for all possible combinations, permutations, or subsets.
-   - You need to find solutions for a decision-making problem (e.g., placing queens, generating subsets, or solving mazes).
-   - You're looking for an optimal solution but also need to explore many possibilities.
+   - The problem asks for in-place modifications on a linked list (without using extra memory).
+   - The task involves reversing a section of the linked list.
+   - The problem involves processing nodes in a reversed order.
 
-   **Common problems**: N-Queens problem, Sudoku solver, generating subsets/permutations, solving a maze.
+   **Common problems**: Reversing a linked list, reversing sub-lists, rearranging nodes.
 
 ### Sample Problem:
-Generate all permutations of a given list of numbers.
+Reverse a sublist of a linked list from position `m` to `n`.
 
-**Example:**
+**Example**:
+- Input: `head = [1, 2, 3, 4, 5], m = 2, n = 4`
+- Output: `[1, 4, 3, 2, 5]`
 
-- **Input:** nums = [1, 2, 3]  
-- **Output:** [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
+**Explanation**:
+1. Identify the start and end of the sublist.
+2. Reverse the nodes in place by adjusting the pointers.
 
-**Explanation:**
-- Use recursion to generate permutations.
-- For each element, include it in the current permutation and recursively generate the remaining permutations.
-- Backtrack when all permutations for a given path are generated.
 
 ### Formula:
-- Explore all possible solutions by building them incrementally and backtracking.
+- Reverse the linked list or a part of it by adjusting the pointers.
 
 ### Java Code:
 ```java
-import java.util.*;
+class LinkedListReversal {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null) return null;
 
-class Backtracking {
-    public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        backtrack(nums, 0, new ArrayList<>(), result);
-        return result;
-    }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode pre = dummy;
 
-    private void backtrack(int[] nums, int index, List<Integer> current, List<List<Integer>> result) {
-        result.add(new ArrayList<>(current));
-        
-        for (int i = index; i < nums.length; i++) {
-            current.add(nums[i]);
-            backtrack(nums, i + 1, current, result);
-            current.remove(current.size() - 1);
+        for (int i = 0; i < m - 1; i++) {
+            pre = pre.next;
         }
+
+        ListNode start = pre.next;
+        ListNode then = start.next;
+
+        for (int i = 0; i < n - m; i++) {
+            start.next = then.next;
+            then.next = pre.next;
+            pre.next = then;
+            then = start.next;
+        }
+
+        return dummy.next;
     }
 }
 ```
 
 ### LeetCode Problems:
-- [Permutations (LeetCode #46)](https://leetcode.com/problems/permutations)
-- [Subsets (LeetCode #78)](https://leetcode.com/problems/subsets)
-- [N-Queens (LeetCode #51)](https://leetcode.com/problems/n-queens)
+1. [Reverse Linked List (LeetCode #206)](https://leetcode.com/problems/reverse-linked-list)
+2. [Reverse Linked List II (LeetCode #92)](https://leetcode.com/problems/reverse-linked-list-ii)
+3. [Swap Nodes in Pairs (LeetCode #24)](https://leetcode.com/problems/swap-nodes-in-pairs)
+...
 
 ---
 
-## Dynamic Programming Patterns
+## Modified Binary Search
 
-Dynamic Programming (DP) involves breaking down problems into smaller subproblems and solving them using a bottom-up or top-down approach.
+The Modified Binary Search pattern adapts binary search to solve a wider range of problems, such as finding elements in rotated sorted arrays.
 
-Use this pattern for problems with overlapping subproblems and optimal substructure.
-
-DP itself has multiple sub-patterns. Some of the most important ones are:
-- Fibonacci Numbers
-- 0/1 Knapsack
-- Longest Common Subsequence (LCS)
-- Longest Increasing Subsequence (LIS)
-- Subset Sum
-- Matrix Chain Multiplication
+Use this pattern for problems involving sorted or rotated arrays where you need to find a specific element.
 
 **Clues**:
-   - The problem involves optimization (e.g., maximizing/minimizing a value).
-   - The question asks for solutions to problems involving overlapping subproblems or optimal substructure.
-   - You need to solve the problem in a bottom-up or top-down manner (usually with memoization or tabulation).
+   - The problem asks to search for an element in a sorted or rotated array.
+   - You need to find a minimum/maximum, or perform an efficient search in log(n) time.
+   - The array is sorted but modified in some way (e.g., rotation, peaks and valleys).
    
-   **Common problems**: Fibonacci sequence, knapsack problem, longest common subsequence, matrix chain multiplication, optimal game strategies.
+   **Common problems**: Searching in rotated sorted arrays, finding the peak element, binary search variations.
 
 ### Sample Problem:
-Calculate the n-th Fibonacci number.
+Find an element in a rotated sorted array.
 
 **Example:**
 
-- **Input:** n = 5  
-- **Output:** 5 (The first five Fibonacci numbers are 0, 1, 1, 2, 3, 5)
+- **Input:** nums = [4, 5, 6, 7, 0, 1, 2], target = 0  
+- **Output:** 4
 
 **Explanation:**
-- Use a bottom-up approach to calculate the n-th Fibonacci number.
-- Start with the first two numbers (0 and 1) and iterate to calculate the next numbers like (dp[i] = dp[i - 1] + dp[i - 2]).
-
-
-### Formula:
-- Break problems into subproblems, store results to avoid recomputation.
-
-### Java Code:
-```java
-class DynamicProgramming {
-    public int fib(int n) {
-        if (n <= 1) return n;
-        
-        int[] dp = new int[n + 1];
-        dp[0] = 0;
-        dp[1] = 1;
-        
-        for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2];
-        }
-        
-        return dp[n];
-    }
-}
-```
+- Perform binary search with an additional check to determine which half of the array is sorted.
+- We then check if the target is within the range of the sorted half.
+- If it is, we search that half; otherwise, we search the other half.
 
 ### LeetCode Problems:
-- [Climbing Stairs (LeetCode #70)](https://leetcode.com/problems/climbing-stairs)
-- [House Robber (LeetCode #198)](https://leetcode.com/problems/house-robber)
-- [Coin Change (LeetCode #322)](https://leetcode.com/problems/coin-change)
-- [Longest Common Subsequence (LCS) (LeetCode #1143)](https://leetcode.com/problems/longest-common-subsequence)
-- [Longest Increasing Subsequence (LIS) (LeetCode #322)](https://leetcode.com/problems/longest-increasing-subsequence)
-- [Partition Equal Subset Sum (LeetCode #416)](https://leetcode.com/problems/partition-equal-subset-sum)
+- [Search in Rotated Sorted Array (LeetCode #33)](https://leetcode.com/problems/search-in-rotated-sorted-array)
+- [Find Minimum in Rotated Sorted Array (LeetCode #153)](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array)
+- [Search a 2D Matrix II (LeetCode #240)](https://leetcode.com/problems/search-a-2d-matrix-ii)
 
-
-
-## Some Other types
-
-
-##  **Cyclic Sort**
-
-### Formula:
-- Place each element in its correct position (1 to n) using index swaps.
-
-### Java Code:
-```java
-class CyclicSort {
-    public void cyclicSort(int[] nums) {
-        int i = 0;
-        while (i < nums.length) {
-            int correctIndex = nums[i] - 1;
-            if (nums[i] != nums[correctIndex]) {
-                swap(nums, i, correctIndex);
-            } else {
-                i++;
-            }
-        }
-    }
-
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-}
-```
-
----
-
-## **Binary Search**
-
-### Formula:
-- Search for a target value in a sorted array by dividing the search space in half.
-
-### Java Code:
-```java
-class BinarySearch {
-    public int search(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            
-            if (nums[mid] == target) {
-                return mid;
-            } else if (nums[mid] < target) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
-        
-        return -1;
-    }
-}
-```
 
 ---
 
@@ -854,3 +940,5 @@ class GreedyAlgorithm {
     }
 }
 ```
+
+---

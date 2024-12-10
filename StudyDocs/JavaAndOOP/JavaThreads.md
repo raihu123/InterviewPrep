@@ -463,3 +463,91 @@ In this example:
 - `thenAccept` consumes the final result and prints it out.
 
 Remember, `CompletableFuture` is powerful for managing complex asynchronous workflows in a simple, readable manner.
+
+
+### **Multithreading and Asynchronous Programming in Java**
+
+#### **1. Multithreading**
+- **Definition**: Using multiple threads within a process to run tasks concurrently.
+- **Key Tool**: `ExecutorService` for managing thread pools.
+- **Blocking Nature**: Threads are often blocked while waiting for resources.
+- **Use Case**: CPU-bound tasks, parallel computations.
+
+**Example: Using `ExecutorService` with Output**
+```java
+ExecutorService executor = Executors.newFixedThreadPool(3);
+Future<String> future1 = executor.submit(() -> "Result from Task 1");
+System.out.println(future1.get()); // Blocking call to get result
+executor.shutdown();
+```
+
+**Batch Execution with `invokeAll`**
+```java
+List<Callable<String>> tasks = Arrays.asList(
+    () -> "Result 1", 
+    () -> "Result 2", 
+    () -> "Result 3"
+);
+List<Future<String>> futures = executor.invokeAll(tasks);
+for (Future<String> future : futures) System.out.println(future.get());
+executor.shutdown();
+```
+
+---
+
+#### **2. Asynchronous Programming**
+- **Definition**: Non-blocking execution where tasks notify upon completion.
+- **Key Tool**: `CompletableFuture` for chaining tasks and handling results.
+- **Non-Blocking Nature**: Tasks do not block the thread; callbacks handle results.
+- **Use Case**: I/O-bound tasks, such as API calls or database queries.
+
+**Example: Using `CompletableFuture`**
+```java
+CompletableFuture.supplyAsync(() -> "Task 1 result")
+                 .thenApply(result -> result + " processed!")
+                 .thenAccept(System.out::println); // Non-blocking
+```
+
+**Handling Multiple Async Tasks**
+```java
+List<CompletableFuture<String>> futures = IntStream.range(1, 4)
+    .mapToObj(i -> CompletableFuture.supplyAsync(() -> "Result from Task " + i))
+    .collect(Collectors.toList());
+CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                 .thenRun(() -> futures.forEach(f -> System.out.println(f.join())));
+```
+
+---
+
+#### **3. Combining Multithreading and Asynchronous Programming**
+- **Hybrid Approach**: Use `ExecutorService` for thread pools and `CompletableFuture` for task chaining and non-blocking behavior.
+- **Use Case**: Efficient handling of both CPU- and I/O-bound tasks.
+
+**Example: Combining `ExecutorService` and `CompletableFuture`**
+```java
+ExecutorService executor = Executors.newFixedThreadPool(3);
+CompletableFuture.supplyAsync(() -> "Task 1", executor)
+                 .thenAccept(result -> System.out.println(result + " completed!"));
+executor.shutdown();
+```
+
+---
+
+#### **Comparison**
+| **Aspect**             | **Multithreading**                      | **Asynchronous Programming**          |
+|------------------------|-----------------------------------------|---------------------------------------|
+| **Definition**         | Multiple threads for concurrent tasks. | Non-blocking execution with callbacks.|
+| **Blocking**           | Blocking (e.g., `Future.get()`).        | Non-blocking (`thenApply`, `thenAccept`). |
+| **Use Case**           | CPU-bound tasks, parallel computations. | I/O-bound tasks, API calls.           |
+| **Tools**              | `ExecutorService`, `Future`.            | `CompletableFuture`.                  |
+| **Thread Management**  | Manual management.                      | Uses `ForkJoinPool` or custom executor.|
+
+---
+
+### **Best Practices**
+1. Use **ExecutorService** for low-level thread management.
+2. Use **CompletableFuture** for chaining and non-blocking workflows.
+3. Combine both for efficient handling of mixed workloads.
+4. For highly scalable systems, consider **Reactive Programming** with `Flux` (Project Reactor).
+
+This concise summary provides key examples and concepts for your study reference. Let me know if you'd like more details!

@@ -1,0 +1,56 @@
+Here's the structured list of study topics in Markdown format, including links to relevant content for each:
+
+---
+
+### **Study Plan: Logical Progression for Problem-Solving Patterns**
+
+1. [**Binary Search**](#binary-search)
+2. [**Prefix Sum**](#prefix-sum)
+3. [**Two Pointers**](#two-pointers)
+4. [**Sliding Window**](#sliding-window)
+5. [**Fast & Slow Pointers**](#fast--slow-pointers)
+6. [**Heap**](#heap)
+7. [**Monotonic Stack**](#monotonic-stack)
+8. [**Overlapping Intervals**](#overlapping-intervals)
+9. [**Backtracking**](#backtracking)
+10. [**Dynamic Programming**](#dynamic-programming)
+11. [**Depth-First Search (DFS)**](#depth-first-search-dfs)
+12. [**Breadth-First Search (BFS)**](#breadth-first-search-bfs)
+13. [**Cyclic Sort**](#cyclic-sort)
+
+---
+
+### **Detailed Links**
+
+#### 1. [Binary Search](#binary-search)
+- Focus: Searching in sorted arrays.
+- Example Problem: Find an element in a rotated sorted array.
+
+---
+
+#### 2. [Prefix Sum](#prefix-sum)
+- Focus: Efficient sum queries on subarrays.
+- Example Problem: Range sum queries using preprocessing.
+
+---
+
+#### 3. [Two Pointers](#two-pointers)
+- Focus: Pair and triplet problems in sorted arrays.
+- Example Problem: Two Sum II, finding pairs that sum to a target.
+
+---
+
+#### 4. [Sliding Window](#sliding-window)
+- Focus: Optimal subarray or substring problems.
+- Example Problem: Longest substring without repeating characters.
+
+---
+
+#### 5. [Fast & Slow Pointers](#fast--slow-pointers)
+- Focus: Cycle detection in linked lists.
+- Example Problem: Detect if a linked list contains a cycle.
+
+---
+
+#### 6. [Heap](#heap)
+- Focus: Top K elements or dynamic prioritization
